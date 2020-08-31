@@ -1,0 +1,12 @@
+---
+localhost:
+  username: patrick
+  password: supercranial
+  hostname: localhost
+  data:
+    testing: [1,2,3]
+    blah: True
+localhost2:
+  username: patrick
+  password: supercranial
+  hostname: localhost

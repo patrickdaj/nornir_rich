@@ -1,0 +1,7 @@
+Maybe write some docstrings so it can be documented in sphinx
+
+Add sphinx docs with Jupyter tutorial
+
+timing to move to far right, requires a grid
+- grid would be all progress, log level and then far right time
+- the progress bar would also need to fit into this so maybe it is not the best plan
