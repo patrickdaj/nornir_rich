@@ -1,5 +1,6 @@
-from rich.progress import ProgressColumn, Text
+from rich.progress import ProgressColumn, Text, Task
 import datetime
+
 
 class TimeElapsedColumn(ProgressColumn):
     """Renders elapsed time."""
@@ -8,7 +9,13 @@ class TimeElapsedColumn(ProgressColumn):
     max_refresh = 0.5
 
     def render(self, task: "Task") -> Text:
-        """Show time elapsed."""
+        """Render elapsed time
+
+        Args:
+            task (Task): progress bar task
+
+        Returns:
+            Text: timedelta between start and current time
+        """
         elapsed = task._get_time() - task.start_time
-        elapsed_delta = datetime.timedelta(seconds=elapsed)
         return Text(f"[{datetime.timedelta(seconds=elapsed)}]")

@@ -1,0 +1,13 @@
+{
+  "books": [
+    {
+      "id": "bk102",
+      "author": "Crockford, Douglas",
+      "title": "JavaScript: The Good Parts",
+      "genre": "Computer",
+      "price": 29.99,
+      "publish_date": "2008-05-01",
+      "description": "Unearthing the Excellence in JavaScript"
+    }
+  ]
+}

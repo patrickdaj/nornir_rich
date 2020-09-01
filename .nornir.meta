@@ -1,0 +1,16 @@
+---
+name: nornir_rich
+summary: |
+  Processor and function plugin to get enhanced results using `rich <github.com/napalm-automation/napalm/>`_.
+nornir_version: ~3
+categories:
+  - results
+intro_file: README.md
+badges:
+  - https://github.com/nornir-automation/nornir/workflows/test_nornir_napalm/badge.svg
+task_plugins:
+  - nornir_rich.plugins.tasks.functions.write_inventory
+  - nornir_rich.plugins.tasks.functions.write_summary
+  - nornir_rich.plugins.tasks.functions.write_results
+processor_plugins:
+  - nornir_rich.plugins.processors.rich_result

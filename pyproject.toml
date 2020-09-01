@@ -23,6 +23,9 @@ sphinxcontrib-napoleon = "^0.7"
 nbsphinx = "^0.6.1"
 sphinx-issues = "^1.2.0"
 sphinx_rtd_theme = "^0.4.3"
+nornir_napalm = "^0.1.1"
+napalm-vyos = "^0.2.0"
+python-dotenv = "^0.14.0"
 
 [build-system]
 requires = ["poetry>=0.12"]
