@@ -4,11 +4,15 @@ version = "0.1.0"
 description = "Nornir results printer using "
 authors = ["Patrick Avery <patrickdaj@gmail.com>"]
 
+[tool.poetry.scripts]
+nornir-cli = "nornir_rich.plugins.cli.nornir_cli:main"
+
 [tool.poetry.dependencies]
 python = ">=3.6,<4.0"
 nornir = {version = "^3.0.0-beta.1", allow-prereleases = true}
 rich = "^6.0.0"
 lxml = "^4.5.2"
+click = "^7.1.2"
 
 [tool.poetry.dev-dependencies]
 ipdb = "^0.13.3"
@@ -26,6 +30,7 @@ sphinx_rtd_theme = "^0.4.3"
 nornir_napalm = "^0.1.1"
 napalm-vyos = "^0.2.0"
 python-dotenv = "^0.14.0"
+nornir_utils = "^0.1.0"
 
 [build-system]
 requires = ["poetry>=0.12"]

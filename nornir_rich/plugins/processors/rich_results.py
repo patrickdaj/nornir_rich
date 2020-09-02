@@ -3,6 +3,7 @@ import logging
 import threading
 import datetime
 import time
+import pprint
 
 from nornir.core.inventory import Host, Inventory
 from nornir.core.task import AggregatedResult, MultiResult, Task, Result
@@ -300,22 +301,19 @@ class RichResults:
             self.console.save_html(filename)
         self.lock.release()
 
-    def write_inventory(self, nr: Inventory) -> None:
+    def write_inventory(self, nr: Inventory, passwords: bool = False) -> None:
         table = Table(expand=True, box=ROUNDED, show_lines=True, width=self.width,)
 
         table.add_column("Host")
-        table.add_column("hostname")
-        table.add_column("username")
-        table.add_column("platform")
-        table.add_column("data")
+        table.add_column("Data")
 
         for host, host_data in nr.inventory.hosts.items():
+            if not passwords:
+                host_data.password = "******"
+                
             table.add_row(
                 host,
-                host_data.hostname,
-                host_data.username,
-                host_data.platform,
-                repr(host_data.data),  # TODO - figure out how to highlight this
+                pprint.pformat(host_data.dict())
             )
 
         self.lock.acquire()

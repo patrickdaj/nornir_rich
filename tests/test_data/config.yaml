@@ -1,3 +1,12 @@
 ---
 inventory:
     plugin: SimpleInventory
+    options:
+        host_file: "test_data/hosts.yaml"
+        group_file: "test_data/groups.yaml"
+        defaults_file: "test_data/defaults.yaml"
+
+runner:
+    plugin: threaded
+    options:
+        num_workers: 100

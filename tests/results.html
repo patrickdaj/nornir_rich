@@ -6,15 +6,9 @@
 .r3 {color: #ff0000; font-style: italic}
 .r4 {color: #000080; font-weight: bold}
 .r5 {color: #005f00}
-.r6 {color: #008000}
-.r7 {color: #808080; font-weight: bold}
-.r8 {color: #000000}
-.r9 {color: #808000; font-style: italic}
-.r10 {color: #800080}
-.r11 {color: #ff00ff}
-.r12 {color: #800000}
-.r13 {color: #005f00; font-weight: bold}
-.r14 {color: #800000; font-weight: bold}
+.r6 {color: #800000}
+.r7 {color: #005f00; font-weight: bold}
+.r8 {color: #800000; font-weight: bold}
 body {
     color: #000000;
     background-color: #ffffff;
@@ -24,78 +18,82 @@ body {
 <html>
 <body>
     <code>
-        <pre style="font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">╭─────────────────────┬───────────────────────────┬─────────────────┬─────────────────┬──────────────────────────────────────────────────────────────╮
-│<span class="r1"> Host                </span>│<span class="r1"> hostname                  </span>│<span class="r1"> username        </span>│<span class="r1"> platform        </span>│<span class="r1"> data                                                         </span>│
-├─────────────────────┼───────────────────────────┼─────────────────┼─────────────────┼──────────────────────────────────────────────────────────────┤
-│ localhost           │ localhost                 │ patrick         │                 │ {'testing': [1, 2, 3], 'blah': True}                         │
-├─────────────────────┼───────────────────────────┼─────────────────┼─────────────────┼──────────────────────────────────────────────────────────────┤
-│ localhost2          │ localhost                 │ patrick         │                 │ {}                                                           │
-├─────────────────────┼───────────────────────────┼─────────────────┼─────────────────┼──────────────────────────────────────────────────────────────┤
-│ vyos                │ 192.168.99.170            │ vyos            │ vyos            │ {}                                                           │
-╰─────────────────────┴───────────────────────────┴─────────────────┴─────────────────┴──────────────────────────────────────────────────────────────╯
-<span class="r2">* localhost ** changed = </span><span class="r3">False</span><span class="r2"> ****************************************************************************************************** </span><span class="r4">[</span><span class="r4">0</span><span class="r2">:</span><span class="r4">00</span><span class="r2">:</span><span class="r4">00.003812</span><span class="r4">]</span>
-<span class="r5">---- Return JSON ** changed = False -------------------------------------------------------------------------------------------- INFO [0:00:00.000278]</span>
-<span class="r1">{</span>
-  <span class="r6">"books"</span>: <span class="r1">[</span>
-    <span class="r1">{</span>
-      <span class="r6">"id"</span>: <span class="r6">"bk102"</span>,
-      <span class="r6">"author"</span>: <span class="r6">"Crockford, Douglas"</span>,
-      <span class="r6">"title"</span>: <span class="r6">"JavaScript: The Good Parts"</span>,
-      <span class="r6">"genre"</span>: <span class="r6">"Computer"</span>,
-      <span class="r6">"price"</span>: <span class="r4">29.99</span>,
-      <span class="r6">"publish_date"</span>: <span class="r6">"2008-05-01"</span>,
-      <span class="r6">"description"</span>: <span class="r6">"Unearthing the Excellence in JavaScript"</span>
-    <span class="r1">}</span>
-  <span class="r1">]</span>
-<span class="r1">}</span>
+        <pre style="font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">╭──────────────────┬────────────────────────┬───────────────┬───────────────┬────────────────────────────────────────────────────────╮
+│<span class="r1"> Host             </span>│<span class="r1"> hostname               </span>│<span class="r1"> username      </span>│<span class="r1"> platform      </span>│<span class="r1"> data                                                   </span>│
+├──────────────────┼────────────────────────┼───────────────┼───────────────┼────────────────────────────────────────────────────────┤
+│ localhost        │ localhost              │ patrick       │               │ {'testing': [1, 2, 3], 'blah': True}                   │
+├──────────────────┼────────────────────────┼───────────────┼───────────────┼────────────────────────────────────────────────────────┤
+│ localhost2       │ localhost              │ patrick       │               │ {}                                                     │
+├──────────────────┼────────────────────────┼───────────────┼───────────────┼────────────────────────────────────────────────────────┤
+│ vyos             │ 192.168.99.170         │ vyos          │ vyos          │ {}                                                     │
+╰──────────────────┴────────────────────────┴───────────────┴───────────────┴────────────────────────────────────────────────────────╯
+<span class="r2">* localhost ** changed = </span><span class="r3">False</span><span class="r2"> ************************************************************************************** </span><span class="r4">[</span><span class="r4">0</span><span class="r2">:</span><span class="r4">00</span><span class="r2">:</span><span class="r4">00.000257</span><span class="r4">]</span>
+<span class="r5">vvvv Return JSON ** changed = False vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv INFO [0:00:00.000257]</span>
+{
+  "books": [
+    {
+      "id": "bk102",
+      "author": "Crockford, Douglas",
+      "title": "JavaScript: The Good Parts",
+      "genre": "Computer",
+      "price": 29.99,
+      "publish_date": "2008-05-01",
+      "description": "Unearthing the Excellence in JavaScript"
+    }
+  ]
+}
 
-<span class="r2">* localhost ** changed = </span><span class="r3">False</span><span class="r2"> ****************************************************************************************************** </span><span class="r4">[</span><span class="r4">0</span><span class="r2">:</span><span class="r4">00</span><span class="r2">:</span><span class="r4">00.004226</span><span class="r4">]</span>
-<span class="r5">---- Return YAML ** changed = False -------------------------------------------------------------------------------------------- INFO [0:00:00.000247]</span>
+<span class="r5">^^^^ END Return JSON ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^</span>
+<span class="r2">* localhost ** changed = </span><span class="r3">False</span><span class="r2"> ************************************************************************************** </span><span class="r4">[</span><span class="r4">0</span><span class="r2">:</span><span class="r4">00</span><span class="r2">:</span><span class="r4">00.000273</span><span class="r4">]</span>
+<span class="r5">vvvv Return YAML ** changed = False vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv INFO [0:00:00.000273]</span>
 books:
   - id: bk102
       author: Crockford, Douglas
-      title: <span class="r6">'JavaScript: The Good Parts'</span>
+      title: 'JavaScript: The Good Parts'
       genre: Computer
-      price: <span class="r4">29.99</span>
-      publish_date: !!str <span class="r4">2008</span>-<span class="r4">05</span>-<span class="r4">01</span>
+      price: 29.99
+      publish_date: !!str 2008-05-01
       description: Unearthing the Excellence in JavaScript
 
-<span class="r2">* localhost ** changed = </span><span class="r3">False</span><span class="r2"> ****************************************************************************************************** </span><span class="r4">[</span><span class="r4">0</span><span class="r2">:</span><span class="r4">00</span><span class="r2">:</span><span class="r4">00.005911</span><span class="r4">]</span>
-<span class="r5">---- Return XML ** changed = False --------------------------------------------------------------------------------------------- INFO [0:00:00.000335]</span>
-<span class="r1">&lt;</span><span class="r7">book</span><span class="r8"> </span><span class="r9">id</span><span class="r8">=</span><span class="r6">"bk101"</span><span class="r1">&gt;</span>
-  <span class="r1">&lt;</span><span class="r7">author</span><span class="r1">&gt;</span>Gambardella, Matthew<span class="r1">&lt;</span><span class="r10">/</span><span class="r11">author</span><span class="r1">&gt;</span>
-  <span class="r1">&lt;</span><span class="r7">title</span><span class="r1">&gt;</span>XML Developer's Guide<span class="r1">&lt;</span><span class="r10">/</span><span class="r11">title</span><span class="r1">&gt;</span>
-  <span class="r1">&lt;</span><span class="r7">genre</span><span class="r1">&gt;</span>Computer<span class="r1">&lt;</span><span class="r10">/</span><span class="r11">genre</span><span class="r1">&gt;</span>
-  <span class="r1">&lt;</span><span class="r7">price</span><span class="r1">&gt;</span><span class="r4">44.95</span><span class="r1">&lt;</span><span class="r10">/</span><span class="r11">price</span><span class="r1">&gt;</span>
-  <span class="r1">&lt;</span><span class="r7">publish_date</span><span class="r1">&gt;</span><span class="r4">2000</span>-<span class="r4">10</span>-<span class="r4">01</span><span class="r1">&lt;</span><span class="r10">/</span><span class="r11">publish_date</span><span class="r1">&gt;</span>
-  <span class="r1">&lt;</span><span class="r7">description</span><span class="r1">&gt;</span>An in-depth look at creating applicationswith XML.<span class="r1">&lt;</span><span class="r10">/</span><span class="r11">description</span><span class="r1">&gt;</span>
-<span class="r1">&lt;</span><span class="r10">/</span><span class="r11">book</span><span class="r1">&gt;</span>
+<span class="r5">^^^^ END Return YAML ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^</span>
+<span class="r2">* localhost ** changed = </span><span class="r3">False</span><span class="r2"> ************************************************************************************** </span><span class="r4">[</span><span class="r4">0</span><span class="r2">:</span><span class="r4">00</span><span class="r2">:</span><span class="r4">00.000288</span><span class="r4">]</span>
+<span class="r5">vvvv Return XML ** changed = False vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv INFO [0:00:00.000288]</span>
+&lt;book id="bk101"&gt;
+  &lt;author&gt;Gambardella, Matthew&lt;/author&gt;
+  &lt;title&gt;XML Developer's Guide&lt;/title&gt;
+  &lt;genre&gt;Computer&lt;/genre&gt;
+  &lt;price&gt;44.95&lt;/price&gt;
+  &lt;publish_date&gt;2000-10-01&lt;/publish_date&gt;
+  &lt;description&gt;An in-depth look at creating applicationswith XML.&lt;/description&gt;
+&lt;/book&gt;
 
-<span class="r2">* localhost ** changed = </span><span class="r3">False</span><span class="r2"> ****************************************************************************************************** </span><span class="r4">[</span><span class="r4">0</span><span class="r2">:</span><span class="r4">00</span><span class="r2">:</span><span class="r4">00.003366</span><span class="r4">]</span>
-<span class="r5">---- Return Diff ** changed = False -------------------------------------------------------------------------------------------- INFO [0:00:00.000196]</span>
-<span class="r4">1</span>,8c1,<span class="r4">8</span>
+<span class="r5">^^^^ END Return XML ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^</span>
+<span class="r2">* localhost ** changed = </span><span class="r3">False</span><span class="r2"> ************************************************************************************** </span><span class="r4">[</span><span class="r4">0</span><span class="r2">:</span><span class="r4">00</span><span class="r2">:</span><span class="r4">00.000248</span><span class="r4">]</span>
+<span class="r5">vvvv Return Diff ** changed = False vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv INFO [0:00:00.000248]</span>
+1,8c1,8
 &lt; books:
 &lt;   - id: bk102
 &lt;       author: Crockford, Douglas
-&lt;       title: <span class="r6">'JavaScript: The Good Parts'</span>
+&lt;       title: 'JavaScript: The Good Parts'
 &lt;       genre: Computer
-&lt;       price: <span class="r4">29.99</span>
-&lt;       publish_date: !!str <span class="r4">2008</span>-<span class="r4">05</span>-<span class="r4">01</span>
+&lt;       price: 29.99
+&lt;       publish_date: !!str 2008-05-01
 &lt;       description: Unearthing the Excellence in JavaScript
 ---
-&gt; <span class="r1">&lt;</span><span class="r7">book</span><span class="r8"> </span><span class="r9">id</span><span class="r8">=</span><span class="r6">"bk101"</span><span class="r1">&gt;</span>
-&gt;   <span class="r1">&lt;</span><span class="r7">author</span><span class="r1">&gt;</span>Gambardella, Matthew<span class="r1">&lt;</span><span class="r10">/</span><span class="r11">author</span><span class="r1">&gt;</span>
-&gt;   <span class="r1">&lt;</span><span class="r7">title</span><span class="r1">&gt;</span>XML Developer's Guide<span class="r1">&lt;</span><span class="r10">/</span><span class="r11">title</span><span class="r1">&gt;</span>
-&gt;   <span class="r1">&lt;</span><span class="r7">genre</span><span class="r1">&gt;</span>Computer<span class="r1">&lt;</span><span class="r10">/</span><span class="r11">genre</span><span class="r1">&gt;</span>
-&gt;   <span class="r1">&lt;</span><span class="r7">price</span><span class="r1">&gt;</span><span class="r4">44.95</span><span class="r1">&lt;</span><span class="r10">/</span><span class="r11">price</span><span class="r1">&gt;</span>
-&gt;   <span class="r1">&lt;</span><span class="r7">publish_date</span><span class="r1">&gt;</span><span class="r4">2000</span>-<span class="r4">10</span>-<span class="r4">01</span><span class="r1">&lt;</span><span class="r10">/</span><span class="r11">publish_date</span><span class="r1">&gt;</span>
-&gt;   <span class="r1">&lt;</span><span class="r7">description</span><span class="r1">&gt;</span>An in-depth look at creating applicationswith XML.<span class="r1">&lt;</span><span class="r10">/</span><span class="r11">description</span><span class="r1">&gt;</span>
-&gt; <span class="r1">&lt;</span><span class="r10">/</span><span class="r11">book</span><span class="r1">&gt;</span>
+&gt; &lt;book id="bk101"&gt;
+&gt;   &lt;author&gt;Gambardella, Matthew&lt;/author&gt;
+&gt;   &lt;title&gt;XML Developer's Guide&lt;/title&gt;
+&gt;   &lt;genre&gt;Computer&lt;/genre&gt;
+&gt;   &lt;price&gt;44.95&lt;/price&gt;
+&gt;   &lt;publish_date&gt;2000-10-01&lt;/publish_date&gt;
+&gt;   &lt;description&gt;An in-depth look at creating applicationswith XML.&lt;/description&gt;
+&gt; &lt;/book&gt;
 
-<span class="r2">* localhost ** changed = </span><span class="r3">False</span><span class="r2"> ****************************************************************************************************** </span><span class="r4">[</span><span class="r4">0</span><span class="r2">:</span><span class="r4">00</span><span class="r2">:</span><span class="r4">00.006106</span><span class="r4">]</span>
-<span class="r5">---- Return Router Diff ** changed = False ------------------------------------------------------------------------------------- INFO [0:00:00.000288]</span>
-@@ <span class="r4">-7</span>,<span class="r4">6</span> +<span class="r4">7</span>,<span class="r4">9</span> @@
-    action bash sudo <span class="r10">/mnt/flash/</span><span class="r11">initialize_ma1.sh</span>
+<span class="r5">^^^^ END Return Diff ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^</span>
+<span class="r2">* localhost ** changed = </span><span class="r3">False</span><span class="r2"> ************************************************************************************** </span><span class="r4">[</span><span class="r4">0</span><span class="r2">:</span><span class="r4">00</span><span class="r2">:</span><span class="r4">00.000265</span><span class="r4">]</span>
+<span class="r5">vvvv Return Router Diff ** changed = False vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv INFO [0:00:00.000265]</span>
+@@ -7,6 +7,9 @@
+    action bash sudo /mnt/flash/initialize_ma1.sh
  !
  transceiver qsfp default-mode 4x10G
 +!
@@ -105,43 +103,46 @@ books:
  spanning-tree mode mstp
  !
 
-<span class="r2">* localhost ** changed = </span><span class="r3">False</span><span class="r2"> ****************************************************************************************************** </span><span class="r4">[</span><span class="r4">0</span><span class="r2">:</span><span class="r4">00</span><span class="r2">:</span><span class="r4">00.004722</span><span class="r4">]</span>
-<span class="r5">---- Return Router Config ** changed = False ----------------------------------------------------------------------------------- INFO [0:00:00.000184]</span>
-interface GigabitEthernet0/<span class="r4">0</span>
+<span class="r5">^^^^ END Return Router Diff ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^</span>
+<span class="r2">* localhost ** changed = </span><span class="r3">False</span><span class="r2"> ************************************************************************************** </span><span class="r4">[</span><span class="r4">0</span><span class="r2">:</span><span class="r4">00</span><span class="r2">:</span><span class="r4">00.000277</span><span class="r4">]</span>
+<span class="r5">vvvv Return Router Config ** changed = False vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv INFO [0:00:00.000277]</span>
+interface GigabitEthernet0/0
  description *** Local network ***
- ip address <span class="r4">10.0</span>.<span class="r4">0.254</span> <span class="r4">255.255</span>.<span class="r4">255.0</span>
+ ip address 10.0.0.254 255.255.255.0
 interface Loopback0
  description *** Interface for temporary addressing ***
- ip address <span class="r4">192.168</span>.<span class="r4">1.8</span> <span class="r4">255.255</span>.<span class="r4">255.0</span>
+ ip address 192.168.1.8 255.255.255.0
  ip nat enable
  exit
-ip nat source static <span class="r4">10.0</span>.<span class="r4">0.8</span> <span class="r4">192.168</span>.<span class="r4">1.8</span>
+ip nat source static 10.0.0.8 192.168.1.8
 
-<span class="r2">* localhost ** changed = </span><span class="r3">False</span><span class="r2"> ****************************************************************************************************** </span><span class="r4">[</span><span class="r4">0</span><span class="r2">:</span><span class="r4">00</span><span class="r2">:</span><span class="r4">00.005200</span><span class="r4">]</span>
-<span class="r5">---- Return etree ** changed = False ------------------------------------------------------------------------------------------- INFO [0:00:00.002099]</span>
-<span class="r1">&lt;</span><span class="r7">Element</span><span class="r8"> </span><span class="r6">'root'</span><span class="r8"> at </span><span class="r4">0x7f46035d65e0</span><span class="r1">&gt;</span>
-<span class="r2">* localhost ** changed = </span><span class="r3">False</span><span class="r2"> ****************************************************************************************************** </span><span class="r4">[</span><span class="r4">0</span><span class="r2">:</span><span class="r4">00</span><span class="r2">:</span><span class="r4">00.007637</span><span class="r4">]</span>
-<span class="r12">---- Generate exception ** changed = False ------------------------------------------------------------------------------------ ERROR [0:00:00.000898]</span>
-Traceback <span class="r1">(</span>most recent call last<span class="r1">)</span>:
-  File <span class="r6">"/home/patrick/dev/nornir_rich/.venv/lib/python3.8/site-packages/nornir/core/task.py"</span>, line <span class="r4">98</span>, in start
-    r = self.task<span class="r1">(</span>self, **self.params<span class="r1">)</span>
-TypeError: gen_exception<span class="r1">()</span> got an unexpected keyword argument <span class="r6">'x'</span>
+<span class="r5">^^^^ END Return Router Config ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^</span>
+<span class="r2">* localhost ** changed = </span><span class="r3">False</span><span class="r2"> ************************************************************************************** </span><span class="r4">[</span><span class="r4">0</span><span class="r2">:</span><span class="r4">00</span><span class="r2">:</span><span class="r4">00.002565</span><span class="r4">]</span>
+<span class="r5">vvvv Return etree ** changed = False vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv INFO [0:00:00.002565]</span>
+&lt;Element 'root' at 0x7f670f363bd0&gt;
+<span class="r5">^^^^ END Return etree ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^</span>
+<span class="r2">* localhost ** changed = </span><span class="r3">False</span><span class="r2"> ************************************************************************************** </span><span class="r4">[</span><span class="r4">0</span><span class="r2">:</span><span class="r4">00</span><span class="r2">:</span><span class="r4">00.000488</span><span class="r4">]</span>
+<span class="r6">vvvv Generate exception ** changed = False vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv ERROR [0:00:00.000488]</span>
+Traceback (most recent call last):
+  File "/home/patrick/dev/nornir_rich/.venv/lib/python3.8/site-packages/nornir/core/task.py", line 98, in start
+    r = self.task(self, **self.params)
+TypeError: gen_exception() got an unexpected keyword argument 'x'
 
-gen_exception<span class="r1">()</span> got an unexpected keyword argument <span class="r6">'x'</span>
-╭───────────────────────────────────────────────────────────────────────────────────────────┬──────────────────┬──────────────────┬──────────────────╮
-│<span class="r1"> Task                                                                                      </span>│<span class="r1"> Ok               </span>│<span class="r1"> Changed          </span>│<span class="r1"> Failed           </span>│
-├───────────────────────────────────────────────────────────────────────────────────────────┼──────────────────┼──────────────────┼──────────────────┤
-│ Return JSON                                                                               │ <span class="r5">1               </span> │ -                │ -                │
-│ Return YAML                                                                               │ <span class="r5">1               </span> │ -                │ -                │
-│ Return XML                                                                                │ <span class="r5">1               </span> │ -                │ -                │
-│ Return Diff                                                                               │ <span class="r5">1               </span> │ -                │ -                │
-│ Return Router Diff                                                                        │ <span class="r5">1               </span> │ -                │ -                │
-│ Return Router Config                                                                      │ <span class="r5">1               </span> │ -                │ -                │
-│ Return etree                                                                              │ <span class="r5">1               </span> │ -                │ -                │
-│ Generate exception                                                                        │ -                │ -                │ <span class="r12">1               </span> │
-├───────────────────────────────────────────────────────────────────────────────────────────┼──────────────────┼──────────────────┼──────────────────┤
-│<span class="r1"> Total                                                                                     </span>│<span class="r1"> </span><span class="r13">7               </span><span class="r1"> </span>│<span class="r1"> -                </span>│<span class="r1"> </span><span class="r14">1               </span><span class="r1"> </span>│
-╰───────────────────────────────────────────────────────────────────────────────────────────┴──────────────────┴──────────────────┴──────────────────╯
+<span class="r6">^^^^ END Generate exception ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^</span>
+╭─────────────────────────────────────────────────────────────────────────────────┬────────────────┬────────────────┬────────────────╮
+│<span class="r1"> Task                                                                            </span>│<span class="r1"> Ok             </span>│<span class="r1"> Changed        </span>│<span class="r1"> Failed         </span>│
+├─────────────────────────────────────────────────────────────────────────────────┼────────────────┼────────────────┼────────────────┤
+│ Return JSON                                                                     │ <span class="r5">1             </span> │ -              │ -              │
+│ Return YAML                                                                     │ <span class="r5">1             </span> │ -              │ -              │
+│ Return XML                                                                      │ <span class="r5">1             </span> │ -              │ -              │
+│ Return Diff                                                                     │ <span class="r5">1             </span> │ -              │ -              │
+│ Return Router Diff                                                              │ <span class="r5">1             </span> │ -              │ -              │
+│ Return Router Config                                                            │ <span class="r5">1             </span> │ -              │ -              │
+│ Return etree                                                                    │ <span class="r5">1             </span> │ -              │ -              │
+│ Generate exception                                                              │ -              │ -              │ <span class="r6">1             </span> │
+├─────────────────────────────────────────────────────────────────────────────────┼────────────────┼────────────────┼────────────────┤
+│<span class="r1"> Total                                                                           </span>│<span class="r1"> </span><span class="r7">7             </span><span class="r1"> </span>│<span class="r1"> -              </span>│<span class="r1"> </span><span class="r8">1             </span><span class="r1"> </span>│
+╰─────────────────────────────────────────────────────────────────────────────────┴────────────────┴────────────────┴────────────────╯
 </pre>
     </code>
 </body>
