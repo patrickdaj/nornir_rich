@@ -3,9 +3,15 @@
 - Add tests using pytest
 - Refactor themeing - see if any themeing can be pulled into default_theme
 - Figure out how to get pprint.pformat into inventory table
-- Figure out how to add mod/args
-- Add logic to show skipped tasks at agg level, maybe even allow for showing skipped hosts
+- Figure out how to add mod/args maybe same format as nornir.log
+- Add logic to show skipped tasks at agg level, there is a nornir obj in there
+  maybe even allow for showing skipped hosts
 - Figure out how to deal with results with large data
 - Work on highlighting and patterns recognized
 - Make the tables prettier, perhaps styles, colorizing
 - Migrate to system styles where possible
+- Add an option to dump nornir.log on any failures, just the portion in the particular run
+- Add x of y to progress bar using custom
+
+- nornir-inventory
+- nornir-adhoc

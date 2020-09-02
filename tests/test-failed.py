@@ -53,12 +53,13 @@ def return_etree(task):
     sub = etree.SubElement(root, 'sub')
     return root
 
-rr = RichResults(attrib_highlight=False)
+rr = RichResults()
 rr.write_inventory(inv)
 inv.processors.append(rr)
 
 lh = inv.filter(name="localhost")
 
+lh.run(gen_exception, x=1, name="Generate exception")
 lh.run(return_json, x=1, name="Return JSON")
 lh.run(return_yaml, x=1, name="Return YAML")
 lh.run(return_xml, x=1, name="Return XML")
@@ -66,7 +67,6 @@ lh.run(return_diff, x=1, name="Return Diff")
 lh.run(return_router_diff, x=1, name="Return Router Diff")
 lh.run(return_router_config, x=1, name="Return Router Config")
 lh.run(return_etree, name="Return etree")
-lh.run(gen_exception, x=1, name="Generate exception")
 
 rr.write_summary()
 rr.write_results()

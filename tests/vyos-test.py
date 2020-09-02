@@ -11,6 +11,16 @@ def get_password_from_env(task):
     load_dotenv(find_dotenv())
     task.host.password = os.getenv(task.host.password)
 
+def get_interfaces(task):
+    task.run(task=napalm_get, getters=["interfaces"], name="Get Vyos interfaces")
+
+def get_environment(task):
+    task.run(task=napalm_get, getters=["environment"], name="Get Vyos environment")
+
+def run_subtasks(task):
+    task.run(get_interfaces)
+    task.run(get_environment)
+    
 
 nr = InitNornir(
     inventory={
@@ -28,10 +38,10 @@ nr.processors.append(rr)
 
 vyos = nr.filter(name="vyos")
 
+rr.write_inventory(vyos)
+
 vyos.run(task=get_password_from_env, name="Get password from env")
-vyos.run(task=napalm_get, getters=["interfaces"], name="Get Vyos interfaces")
-vyos.run(task=napalm_get, getters=["environment"], name="Get Vyos environment")
-vyos.run(
-    task=napalm_cli, commands=["show configuration"], name="Get Vyos configuration"
-)
+vyos.run(task=run_subtasks, name='Get Vyos info via Subtask')
+#vyos.run(task=napalm_get, getters=["interfaces"], name="Get Vyos interfaces")
+#vyos.run(task=napalm_get, getters=["environment"], name="Get Vyos environment")
 rr.write_summary()
