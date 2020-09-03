@@ -308,12 +308,13 @@ class RichResults:
         table.add_column("Data")
 
         for host, host_data in nr.inventory.hosts.items():
+            host_dict = host_data.dict()
             if not passwords:
-                host_data.password = "******"
-                
+                host_dict['password'] = "******"
+
             table.add_row(
                 host,
-                pprint.pformat(host_data.dict())
+                pprint.pformat(host_dict)
             )
 
         self.lock.acquire()

@@ -12,8 +12,10 @@
 - Migrate to system styles where possible
 - Add an option to dump nornir.log on any failures, just the portion in the particular run
 - Add x of y to progress bar using custom
+- Add step and start_at_task to RichResults by capturing at start of aggregate tasks, maybe even add a 
+  selection to turn on debugging or proceed or cancel
 
 - nornir-cli
     - Better way to find modules rather than adding them
     - Args needs a better way, perhaps use json
-    - Perhaps a way to run a YAML file
+    - test nornir-cli run

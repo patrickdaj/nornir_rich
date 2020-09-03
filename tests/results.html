@@ -18,17 +18,41 @@ body {
 <html>
 <body>
     <code>
-        <pre style="font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">╭──────────────────┬────────────────────────┬───────────────┬───────────────┬────────────────────────────────────────────────────────╮
-│<span class="r1"> Host             </span>│<span class="r1"> hostname               </span>│<span class="r1"> username      </span>│<span class="r1"> platform      </span>│<span class="r1"> data                                                   </span>│
-├──────────────────┼────────────────────────┼───────────────┼───────────────┼────────────────────────────────────────────────────────┤
-│ localhost        │ localhost              │ patrick       │               │ {'testing': [1, 2, 3], 'blah': True}                   │
-├──────────────────┼────────────────────────┼───────────────┼───────────────┼────────────────────────────────────────────────────────┤
-│ localhost2       │ localhost              │ patrick       │               │ {}                                                     │
-├──────────────────┼────────────────────────┼───────────────┼───────────────┼────────────────────────────────────────────────────────┤
-│ vyos             │ 192.168.99.170         │ vyos          │ vyos          │ {}                                                     │
-╰──────────────────┴────────────────────────┴───────────────┴───────────────┴────────────────────────────────────────────────────────╯
-<span class="r2">* localhost ** changed = </span><span class="r3">False</span><span class="r2"> ************************************************************************************** </span><span class="r4">[</span><span class="r4">0</span><span class="r2">:</span><span class="r4">00</span><span class="r2">:</span><span class="r4">00.000257</span><span class="r4">]</span>
-<span class="r5">vvvv Return JSON ** changed = False vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv INFO [0:00:00.000257]</span>
+        <pre style="font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">╭───────────────────────────┬────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│<span class="r1"> Host                      </span>│<span class="r1"> Data                                                                                                   </span>│
+├───────────────────────────┼────────────────────────────────────────────────────────────────────────────────────────────────────────┤
+│ localhost                 │ {'connection_options': {},                                                                             │
+│                           │  'data': {'blah': True, 'testing': [1, 2, 3]},                                                         │
+│                           │  'groups': [],                                                                                         │
+│                           │  'hostname': 'localhost',                                                                              │
+│                           │  'name': 'localhost',                                                                                  │
+│                           │  'password': '******',                                                                                 │
+│                           │  'platform': None,                                                                                     │
+│                           │  'port': None,                                                                                         │
+│                           │  'username': 'patrick'}                                                                                │
+├───────────────────────────┼────────────────────────────────────────────────────────────────────────────────────────────────────────┤
+│ localhost2                │ {'connection_options': {},                                                                             │
+│                           │  'data': {},                                                                                           │
+│                           │  'groups': [],                                                                                         │
+│                           │  'hostname': 'localhost',                                                                              │
+│                           │  'name': 'localhost2',                                                                                 │
+│                           │  'password': '******',                                                                                 │
+│                           │  'platform': None,                                                                                     │
+│                           │  'port': None,                                                                                         │
+│                           │  'username': 'patrick'}                                                                                │
+├───────────────────────────┼────────────────────────────────────────────────────────────────────────────────────────────────────────┤
+│ vyos                      │ {'connection_options': {},                                                                             │
+│                           │  'data': {},                                                                                           │
+│                           │  'groups': [],                                                                                         │
+│                           │  'hostname': '192.168.99.170',                                                                         │
+│                           │  'name': 'vyos',                                                                                       │
+│                           │  'password': '******',                                                                                 │
+│                           │  'platform': 'vyos',                                                                                   │
+│                           │  'port': None,                                                                                         │
+│                           │  'username': 'vyos'}                                                                                   │
+╰───────────────────────────┴────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+<span class="r2">* localhost ** changed = </span><span class="r3">False</span><span class="r2"> ************************************************************************************** </span><span class="r4">[</span><span class="r4">0</span><span class="r2">:</span><span class="r4">00</span><span class="r2">:</span><span class="r4">00.500968</span><span class="r4">]</span>
+<span class="r5">vvvv Return JSON ** changed = False vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv INFO [0:00:00.500968]</span>
 {
   "books": [
     {
@@ -44,8 +68,8 @@ body {
 }
 
 <span class="r5">^^^^ END Return JSON ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^</span>
-<span class="r2">* localhost ** changed = </span><span class="r3">False</span><span class="r2"> ************************************************************************************** </span><span class="r4">[</span><span class="r4">0</span><span class="r2">:</span><span class="r4">00</span><span class="r2">:</span><span class="r4">00.000273</span><span class="r4">]</span>
-<span class="r5">vvvv Return YAML ** changed = False vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv INFO [0:00:00.000273]</span>
+<span class="r2">* localhost ** changed = </span><span class="r3">False</span><span class="r2"> ************************************************************************************** </span><span class="r4">[</span><span class="r4">0</span><span class="r2">:</span><span class="r4">00</span><span class="r2">:</span><span class="r4">00.501010</span><span class="r4">]</span>
+<span class="r5">vvvv Return YAML ** changed = False vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv INFO [0:00:00.501010]</span>
 books:
   - id: bk102
       author: Crockford, Douglas
@@ -56,8 +80,8 @@ books:
       description: Unearthing the Excellence in JavaScript
 
 <span class="r5">^^^^ END Return YAML ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^</span>
-<span class="r2">* localhost ** changed = </span><span class="r3">False</span><span class="r2"> ************************************************************************************** </span><span class="r4">[</span><span class="r4">0</span><span class="r2">:</span><span class="r4">00</span><span class="r2">:</span><span class="r4">00.000288</span><span class="r4">]</span>
-<span class="r5">vvvv Return XML ** changed = False vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv INFO [0:00:00.000288]</span>
+<span class="r2">* localhost ** changed = </span><span class="r3">False</span><span class="r2"> ************************************************************************************** </span><span class="r4">[</span><span class="r4">0</span><span class="r2">:</span><span class="r4">00</span><span class="r2">:</span><span class="r4">00.500805</span><span class="r4">]</span>
+<span class="r5">vvvv Return XML ** changed = False vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv INFO [0:00:00.500805]</span>
 &lt;book id="bk101"&gt;
   &lt;author&gt;Gambardella, Matthew&lt;/author&gt;
   &lt;title&gt;XML Developer's Guide&lt;/title&gt;
@@ -68,8 +92,8 @@ books:
 &lt;/book&gt;
 
 <span class="r5">^^^^ END Return XML ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^</span>
-<span class="r2">* localhost ** changed = </span><span class="r3">False</span><span class="r2"> ************************************************************************************** </span><span class="r4">[</span><span class="r4">0</span><span class="r2">:</span><span class="r4">00</span><span class="r2">:</span><span class="r4">00.000248</span><span class="r4">]</span>
-<span class="r5">vvvv Return Diff ** changed = False vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv INFO [0:00:00.000248]</span>
+<span class="r2">* localhost ** changed = </span><span class="r3">False</span><span class="r2"> ************************************************************************************** </span><span class="r4">[</span><span class="r4">0</span><span class="r2">:</span><span class="r4">00</span><span class="r2">:</span><span class="r4">00.501076</span><span class="r4">]</span>
+<span class="r5">vvvv Return Diff ** changed = False vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv INFO [0:00:00.501076]</span>
 1,8c1,8
 &lt; books:
 &lt;   - id: bk102
@@ -90,8 +114,8 @@ books:
 &gt; &lt;/book&gt;
 
 <span class="r5">^^^^ END Return Diff ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^</span>
-<span class="r2">* localhost ** changed = </span><span class="r3">False</span><span class="r2"> ************************************************************************************** </span><span class="r4">[</span><span class="r4">0</span><span class="r2">:</span><span class="r4">00</span><span class="r2">:</span><span class="r4">00.000265</span><span class="r4">]</span>
-<span class="r5">vvvv Return Router Diff ** changed = False vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv INFO [0:00:00.000265]</span>
+<span class="r2">* localhost ** changed = </span><span class="r3">False</span><span class="r2"> ************************************************************************************** </span><span class="r4">[</span><span class="r4">0</span><span class="r2">:</span><span class="r4">00</span><span class="r2">:</span><span class="r4">00.501029</span><span class="r4">]</span>
+<span class="r5">vvvv Return Router Diff ** changed = False vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv INFO [0:00:00.501029]</span>
 @@ -7,6 +7,9 @@
     action bash sudo /mnt/flash/initialize_ma1.sh
  !
@@ -104,8 +128,8 @@ books:
  !
 
 <span class="r5">^^^^ END Return Router Diff ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^</span>
-<span class="r2">* localhost ** changed = </span><span class="r3">False</span><span class="r2"> ************************************************************************************** </span><span class="r4">[</span><span class="r4">0</span><span class="r2">:</span><span class="r4">00</span><span class="r2">:</span><span class="r4">00.000277</span><span class="r4">]</span>
-<span class="r5">vvvv Return Router Config ** changed = False vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv INFO [0:00:00.000277]</span>
+<span class="r2">* localhost ** changed = </span><span class="r3">False</span><span class="r2"> ************************************************************************************** </span><span class="r4">[</span><span class="r4">0</span><span class="r2">:</span><span class="r4">00</span><span class="r2">:</span><span class="r4">00.501059</span><span class="r4">]</span>
+<span class="r5">vvvv Return Router Config ** changed = False vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv INFO [0:00:00.501059]</span>
 interface GigabitEthernet0/0
  description *** Local network ***
  ip address 10.0.0.254 255.255.255.0
@@ -117,12 +141,12 @@ interface Loopback0
 ip nat source static 10.0.0.8 192.168.1.8
 
 <span class="r5">^^^^ END Return Router Config ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^</span>
-<span class="r2">* localhost ** changed = </span><span class="r3">False</span><span class="r2"> ************************************************************************************** </span><span class="r4">[</span><span class="r4">0</span><span class="r2">:</span><span class="r4">00</span><span class="r2">:</span><span class="r4">00.002565</span><span class="r4">]</span>
-<span class="r5">vvvv Return etree ** changed = False vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv INFO [0:00:00.002565]</span>
-&lt;Element 'root' at 0x7f670f363bd0&gt;
+<span class="r2">* localhost ** changed = </span><span class="r3">False</span><span class="r2"> ************************************************************************************** </span><span class="r4">[</span><span class="r4">0</span><span class="r2">:</span><span class="r4">00</span><span class="r2">:</span><span class="r4">00.507027</span><span class="r4">]</span>
+<span class="r5">vvvv Return etree ** changed = False vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv INFO [0:00:00.507027]</span>
+&lt;Element 'root' at 0x7feec385b6d0&gt;
 <span class="r5">^^^^ END Return etree ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^</span>
-<span class="r2">* localhost ** changed = </span><span class="r3">False</span><span class="r2"> ************************************************************************************** </span><span class="r4">[</span><span class="r4">0</span><span class="r2">:</span><span class="r4">00</span><span class="r2">:</span><span class="r4">00.000488</span><span class="r4">]</span>
-<span class="r6">vvvv Generate exception ** changed = False vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv ERROR [0:00:00.000488]</span>
+<span class="r2">* localhost ** changed = </span><span class="r3">False</span><span class="r2"> ************************************************************************************** </span><span class="r4">[</span><span class="r4">0</span><span class="r2">:</span><span class="r4">00</span><span class="r2">:</span><span class="r4">00.000815</span><span class="r4">]</span>
+<span class="r6">vvvv Generate exception ** changed = False vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv ERROR [0:00:00.000815]</span>
 Traceback (most recent call last):
   File "/home/patrick/dev/nornir_rich/.venv/lib/python3.8/site-packages/nornir/core/task.py", line 98, in start
     r = self.task(self, **self.params)

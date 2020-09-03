@@ -17,7 +17,7 @@ version = "1.4.4"
 [[package]]
 category = "dev"
 description = "Disable App Nap on OS X 10.9"
-marker = "sys_platform == \"darwin\" or platform_system == \"Darwin\" or python_version >= \"3.4\" and sys_platform == \"darwin\" or python_version >= \"3.3\" and sys_platform == \"darwin\""
+marker = "python_version >= \"3.4\" and sys_platform == \"darwin\" or platform_system == \"Darwin\""
 name = "appnope"
 optional = false
 python-versions = "*"
@@ -76,6 +76,7 @@ pytz = ">=2015.7"
 [[package]]
 category = "dev"
 description = "Specifications for callback functions passed in to an API"
+marker = "python_version >= \"3.4\""
 name = "backcall"
 optional = false
 python-versions = "*"
@@ -445,6 +446,7 @@ test = ["pytest (>=3.6.0)", "pytest-cov", "mock"]
 [[package]]
 category = "dev"
 description = "An autocompletion tool for Python that can be used for text editors."
+marker = "python_version >= \"3.4\""
 name = "jedi"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
@@ -581,7 +583,7 @@ pywin32 = ">=1.0"
 traitlets = "*"
 
 [[package]]
-category = "main"
+category = "dev"
 description = "Powerful and Pythonic XML processing library combining libxml2/libxslt with the ElementTree API."
 name = "lxml"
 optional = false
@@ -799,7 +801,7 @@ description = "Multi-vendor library to simplify Paramiko SSH connections to netw
 name = "netmiko"
 optional = false
 python-versions = "*"
-version = "3.2.0"
+version = "3.3.0"
 
 [package.dependencies]
 paramiko = ">=2.4.3"
@@ -845,15 +847,41 @@ nornir = ">=3.0.0b1,<3.1.0"
 
 [[package]]
 category = "dev"
-description = "Collection of plugins and functions for nornir that don't require external dependencies"
-name = "nornir-utils"
+description = ""
+develop = true
+name = "nornir-netmiko"
 optional = false
-python-versions = ">=3.6,<4.0"
+python-versions = "^3.6"
 version = "0.1.0"
 
 [package.dependencies]
-colorama = ">=0.4.3,<0.5.0"
-nornir = ">=3.0.0b1,<3.1.0"
+netmiko = "^3.1.0"
+nornir = "branch 3.0.0"
+nornir_napalm = "^0.1.1"
+
+[package.source]
+reference = ""
+type = "directory"
+url = "../nornir_netmiko"
+
+[[package]]
+category = "dev"
+description = ""
+develop = true
+name = "nornir-utils"
+optional = false
+python-versions = "^3.6"
+version = "0.1.1"
+
+[package.dependencies]
+colorama = "^0.4.3"
+nornir = "~3.0.0b1"
+paramiko = "^2.7.1"
+
+[package.source]
+reference = ""
+type = "directory"
+url = "../nornir_utils"
 
 [[package]]
 category = "dev"
@@ -939,6 +967,7 @@ invoke = ["invoke (>=1.3)"]
 [[package]]
 category = "dev"
 description = "A Python Parser"
+marker = "python_version >= \"3.4\""
 name = "parso"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
@@ -972,7 +1001,7 @@ version = "0.8.0"
 [[package]]
 category = "dev"
 description = "Pexpect allows easy control of interactive console applications."
-marker = "python_version >= \"3.4\" and sys_platform != \"win32\" or sys_platform != \"win32\" or python_version >= \"3.3\" and sys_platform != \"win32\""
+marker = "python_version >= \"3.4\" and sys_platform != \"win32\""
 name = "pexpect"
 optional = false
 python-versions = "*"
@@ -984,6 +1013,7 @@ ptyprocess = ">=0.5"
 [[package]]
 category = "dev"
 description = "Tiny 'shelve'-like database with concurrency support"
+marker = "python_version >= \"3.4\""
 name = "pickleshare"
 optional = false
 python-versions = "*"
@@ -1041,7 +1071,7 @@ wcwidth = "*"
 [[package]]
 category = "dev"
 description = "Run a subprocess in a pseudo terminal"
-marker = "python_version >= \"3.4\" and sys_platform != \"win32\" or sys_platform != \"win32\" or python_version >= \"3.3\" and sys_platform != \"win32\" or python_version >= \"3.4\" and sys_platform != \"win32\" and (python_version >= \"3.4\" and sys_platform != \"win32\" or sys_platform != \"win32\" or python_version >= \"3.3\" and sys_platform != \"win32\") or os_name != \"nt\" or python_version >= \"3.3\" and sys_platform != \"win32\" and (python_version >= \"3.4\" and sys_platform != \"win32\" or sys_platform != \"win32\" or python_version >= \"3.3\" and sys_platform != \"win32\")"
+marker = "python_version >= \"3.4\" and sys_platform != \"win32\" or os_name != \"nt\""
 name = "ptyprocess"
 optional = false
 python-versions = "*"
@@ -1267,7 +1297,7 @@ description = "Jupyter Qt console"
 name = "qtconsole"
 optional = false
 python-versions = "*"
-version = "4.7.6"
+version = "4.7.7"
 
 [package.dependencies]
 ipykernel = ">=4.1"
@@ -1716,7 +1746,7 @@ docs = ["sphinx", "jaraco.packaging (>=3.2)", "rst.linker (>=1.9)"]
 testing = ["jaraco.itertools", "func-timeout"]
 
 [metadata]
-content-hash = "192757db91b57fdf7dcfffd4c4ded49528b8b20def40873a551ba48923339087"
+content-hash = "666ac7fe1cf29ceeaf0142b259fa86e4083e6e26bb011b53d5e6fa42cd88d015"
 python-versions = ">=3.6,<4.0"
 
 [metadata.files]
@@ -2127,8 +2157,8 @@ netaddr = [
     {file = "netaddr-0.8.0.tar.gz", hash = "sha256:d6cc57c7a07b1d9d2e917aa8b36ae8ce61c35ba3fcd1b83ca31c5a0ee2b5a243"},
 ]
 netmiko = [
-    {file = "netmiko-3.2.0-py2.py3-none-any.whl", hash = "sha256:c1e786e8513baa72089317cc4fbfa60c88bcfa29fc6f2cfb0937c032ebef9e42"},
-    {file = "netmiko-3.2.0.tar.gz", hash = "sha256:d26c62827453196645aa34768fc814469530d3ce4d3592157d05b41abd37ea68"},
+    {file = "netmiko-3.3.0-py2.py3-none-any.whl", hash = "sha256:4192403c73b9b0a04af935f658392abf75213df7dbff837f54ba3a3ad85b7a16"},
+    {file = "netmiko-3.3.0.tar.gz", hash = "sha256:4539a2c2567872342aa485355942d035b0a087a1c91a15ccbc6062009c8ec00d"},
 ]
 nornir = [
     {file = "nornir-3.0.0b1-py3-none-any.whl", hash = "sha256:3890d1d4654924bf74ffb0e7985f2b987dfd6bc4a285060e1b18df60654536c3"},
@@ -2138,10 +2168,8 @@ nornir-napalm = [
     {file = "nornir_napalm-0.1.1-py3-none-any.whl", hash = "sha256:f0def9ebedd99563cb95a7d390498b934106e1d8e2121dab4f132da02a75fd5d"},
     {file = "nornir_napalm-0.1.1.tar.gz", hash = "sha256:92b861c5aaf429b40bb9c0a4b24ed471e4f9f3251fa49919200e0d502aad3563"},
 ]
-nornir-utils = [
-    {file = "nornir_utils-0.1.0-py3-none-any.whl", hash = "sha256:4cf3b8d529730cec0ab4d9aad3d2c586056cedd9315be1b176d8915d762b9cef"},
-    {file = "nornir_utils-0.1.0.tar.gz", hash = "sha256:6d0c04472a8ce3c42556cbb115676663a0c3fe9e818f4b5a4b3c46bb466e4c66"},
-]
+nornir-netmiko = []
+nornir-utils = []
 notebook = [
     {file = "notebook-6.1.3-py3-none-any.whl", hash = "sha256:964cc40cff68e473f3778aef9266e867f7703cb4aebdfd250f334efe02f64c86"},
     {file = "notebook-6.1.3.tar.gz", hash = "sha256:9990d51b9931a31e681635899aeb198b4c4b41586a9e87fbfaaed1a71d0a05b6"},
@@ -2347,8 +2375,8 @@ pyzmq = [
     {file = "pyzmq-19.0.2.tar.gz", hash = "sha256:296540a065c8c21b26d63e3cea2d1d57902373b16e4256afe46422691903a438"},
 ]
 qtconsole = [
-    {file = "qtconsole-4.7.6-py2.py3-none-any.whl", hash = "sha256:570b9e1dd4f9b727699b0ed04c6943d9d32d5a2085aa69d82d814e039bbcf74b"},
-    {file = "qtconsole-4.7.6.tar.gz", hash = "sha256:6c24397c19a49a5cf69582c931db4b0f6b00a78530a2bfd122936f2ebfae2fef"},
+    {file = "qtconsole-4.7.7-py2.py3-none-any.whl", hash = "sha256:7a42af4b1c51d870b41e4a1b67e2e71296c0edd1b2f46c647ad67dff421c2726"},
+    {file = "qtconsole-4.7.7.tar.gz", hash = "sha256:f236ead8711dba0702507dd8fad473c7216a86eefa6098eff8ec4b54f57d7804"},
 ]
 qtpy = [
     {file = "QtPy-1.9.0-py2.py3-none-any.whl", hash = "sha256:fa0b8363b363e89b2a6f49eddc162a04c0699ae95e109a6be3bb145a913190ea"},

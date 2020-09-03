@@ -23,31 +23,39 @@ inv = InitNornir(
 
 
 def gen_exception(task):
+    time.sleep(0.5)
     x = 1 / 0
 
 
 def return_xml(task, x):
+    time.sleep(0.5)
     return open(f"{dir_path}/test_data/test.xml", "r").read()
 
 
 def return_json(task, x):
+    time.sleep(0.5)
     return open(f"{dir_path}/test_data/test.json", "r").read()
 
 
 def return_yaml(task, x):
+    time.sleep(0.5)
     return open(f"{dir_path}/test_data/test.yaml", "r").read()
 
 
 def return_diff(task, x):
+    time.sleep(0.5)
     return open(f"{dir_path}/test_data/test.diff", "r").read()
 
 def return_router_diff(task, x):
+    time.sleep(0.5)
     return open(f"{dir_path}/test_data/router.diff", "r").read()
 
 def return_router_config(task, x):
+    time.sleep(0.5)
     return open(f"{dir_path}/test_data/router.config", "r").read()
 
 def return_etree(task):
+    time.sleep(0.5)
     import xml.etree.ElementTree as etree
     root = etree.Element('root')
     sub = etree.SubElement(root, 'sub')

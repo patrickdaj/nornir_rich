@@ -1,13 +1,22 @@
 # nornir_rich
 
-nornir_rich is a customizable results printer for nornir.  It is more complex than the default print_result as it relies on a processor to get additional data for display.
+nornir_rich is a set of CLI tools for Nornir.  Maybe it should be named nornir-clitools. :)
 
 ## Features
-- Customizable styles
-- All results exportable to HTML or text (thanks to rich)
-- Summary of execution
-- Optional pretty print of inventory formatted as YAML
-- Support for more result/stdout formats such as XML
+- Custom processor that supports more or less the standard Nornir format but:
+    - Has progress bars built in at nornir.run level
+    - Customizable styles
+    - All results exportable to HTML or text (thanks to rich)
+    - Summary of execution
+    - Listing of inventory
+    - Captures task runtime and also task details (nothing done with task details yet)
+- Inventory output in processor and CLI (similar to anisble-inventory)
+- Adhoc run task in CLI (similar to ansible-adhoc)
+- Support for running tasks from YAML (similar to ansible-playbook)
+
+## Demo
+[![asciicast](https://asciinema.org/a/04Xpc2MybxqVkrEhCgA9K39Wr.svg)](https://asciinema.org/a/04Xpc2MybxqVkrEhCgA9K39Wr)
+
 
 ## Installation
 ```python
@@ -37,4 +46,14 @@ rr.write_summary()
 rr.write_results()
 ```
 
-## Custom styles
+The write_results automatically saves the screen output to HTML in results.html by default.
+
+## Debugging with step and start_at
+
+# nornir-cli
+
+## Inventory with nornir-cli inventory
+
+## Run addhoc tasks with nornir-cli adhoc
+
+## Be like an ansible with nornir-cli run and still have a debugger
