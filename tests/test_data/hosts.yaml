@@ -1,17 +1,16 @@
 ---
 localhost:
-  username: patrick
+  username: admin
   password: PASSWORD
   hostname: localhost
   data:
     testing: [1,2,3]
     blah: True
 localhost2:
-  username: patrick
+  username: admin
   password: PASSWORD
   hostname: localhost
-vyos:
-  username: vyos
+localhost3:
+  username: admin
   password: PASSWORD
-  hostname: 192.168.99.170
-  platform: vyos
+  hostname: localhost

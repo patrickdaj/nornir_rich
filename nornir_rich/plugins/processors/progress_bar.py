@@ -19,3 +19,11 @@ class TimeElapsedColumn(ProgressColumn):
         """
         elapsed = task._get_time() - task.start_time
         return Text(f"[{datetime.timedelta(seconds=elapsed)}]")
+
+class TaskStatusColumn(ProgressColumn):
+
+    max_refresh = 0.5
+
+    def render(self, task: "Task") -> Text:
+        """Render task status done/failed/total"""
+        pass

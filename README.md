@@ -14,10 +14,6 @@ nornir_rich is a set of CLI tools for Nornir.  Maybe it should be named nornir-c
 - Adhoc run task in CLI (similar to ansible-adhoc)
 - Support for running tasks from YAML (similar to ansible-playbook)
 
-## Demo
-[![asciicast](https://asciinema.org/a/04Xpc2MybxqVkrEhCgA9K39Wr.svg)](https://asciinema.org/a/04Xpc2MybxqVkrEhCgA9K39Wr)
-
-
 ## Installation
 ```python
 poetry add nornir-rich

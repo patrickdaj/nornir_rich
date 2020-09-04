@@ -8,39 +8,20 @@ import pprint
 from nornir.core.inventory import Host, Inventory
 from nornir.core.task import AggregatedResult, MultiResult, Task, Result
 
-# any defaults can be re-mapped here
-# https://github.com/willmcgugan/rich/blob/master/rich/default_styles.py
-#from rich.style import Style
-#from rich.default_styles import DEFAULT_STYLES
-
-#overriden = {
-#    "repr.tag_name": Style(color="hot_pink3", bold=True),
-#    "repr.attrib_name": Style(color="hot_pink3", bold=True),
-#    "repr.attrib_value": Style(color="hot_pink3", underline=True),
-#    "progress.percentage": Style(color="blue")
-#}
-#DEFAULT_STYLES.update(overriden)
-
-# to get better highlighting need to subclass ReprHighlighter
-# https://github.com/willmcgugan/rich/blob/master/rich/highlighter.py
-
-#from pygments.lexers import guess_lexer
-
 from rich.console import Console
 from rich.theme import Theme
 from rich.table import Table
 from rich.box import ROUNDED
 from rich.progress import Progress, BarColumn
 from rich.text import Text
-#from rich.syntax import Syntax
 
-from .default_theme import default_theme
 from .progress_bar import TimeElapsedColumn
-from .highlighter import NornirHighlighter
+from .custom_theme import CustomTheme
+
 
 class RichResults:
     """
-    `rich` implementation of the Processor interface.
+    rich implementation of the Processor interface.
     This plugin gets called when certain events happen by `nornir`.
     """
 
@@ -49,13 +30,12 @@ class RichResults:
         severity_level: int = logging.INFO,
         record: bool = True,
         display_params: bool = False,
-        theme: Theme = default_theme,
+        theme: Theme = CustomTheme,
         width: int = 0,
         timing: bool = True,
         progress_bar: bool = True,
-        show_skipped = False,
-        attrib_highlight: bool = True,
-        pygments_theme: str = 'monokai',
+        show_skipped=True,
+        attrib_highlight: bool = False,  # TODO - customize as its kinda ugly by default
         vars: List[str] = ["stdout", "diff", "result"],
     ) -> None:
         """Creates a RichResult object to be set as nornir processor
@@ -63,15 +43,18 @@ class RichResults:
         Args:
             severity_level (int, optional): Severity level of task. Defaults to logging.INFO.
             record (bool, optional): Allows record to write results. Defaults to True.
-            display_params (bool, optional): Displays task params. Defaults to False.
+            display_params (bool, optional): Displays task params. Defaults to True.
             theme (Theme, optional): `Theme` to use for output. Defaults to default_theme.
             width (int, optional): Width of standard output minus log and timing. Defaults to 80.
             timing (bool, optional): Include timing info. Defaults to True.
             progress_bar (bool, optional): Include progress bar. Defaults to True.
+            show_skipped (bool, optional): Display details of skipped hosts. Defaults to True.
+            attrib_highlight (bool, optional): Use rich hightlighting on result attributes.  Defaults to False.
+            vars (list, optional): Define what attributes of result to show.  Defaults to ['stdout', 'diff', 'result']
         """
         self.severity_level = severity_level
         self.lock = threading.Lock()
-        self.console = Console(theme=theme, record=True)#, highlighter=NornirHighlighter())
+        self.console = Console(theme=theme, record=True)
         self.results: List[AggregatedResult] = []
         self.record = record
         self.width = width or self.console.width
@@ -79,7 +62,8 @@ class RichResults:
         self.progress_bar = progress_bar
         self.attrib_highlight = attrib_highlight
         self.vars = vars
-        self.pygments_theme = pygments_theme
+        self.display_params = display_params
+        self.show_skipped = show_skipped
 
     def task_started(self, task: Task) -> None:
         """
@@ -176,23 +160,31 @@ class RichResults:
             task.end_time = time.time()
             task.run_time = task.end_time - task.start_time
             result[0].task = task
-    
+
     def _print_result(self, result: Result) -> None:
-        
+
         if isinstance(result, AggregatedResult):
             if not self.progress_bar:
                 msg = f"{result.name}"
                 self.console.print(f"{msg}{'*' * (self.width - len(msg))}")
 
+            hosts_set = set(result.task.nornir.inventory.hosts)
+            skipped = result.task.nornir.data.failed_hosts | hosts_set 
+            
+            for skipped_host in skipped:
+                if skipped_host not in result:
+                    msg = f"* {skipped} ** skipped "
+                    self.console.print(
+                        f"{msg}{'*' * (self.width - len(msg))}",
+                        style='skipped'
+                    )
+
             for host, host_data in sorted(result.items()):
                 msg = f"* {host} ** changed = {host_data.changed} "
-                if self.timing:
-                    post = f" [{datetime.timedelta(seconds = host_data.task.run_time)}]"
-                else:
-                    post = ""
 
                 self.console.print(
-                    f"{msg}{'*' * (self.width - len(msg) - len(post))}{post}", style="host"
+                    f"{msg}{'*' * (self.width - len(msg))}",
+                    style="host",
                 )
                 self._print_result(host_data)
 
@@ -205,8 +197,8 @@ class RichResults:
             msg = f"{'^' * 4} END {result[0].name} "
             self.console.print(
                 f"{msg}{'^' * (self.width - len(msg))}",
-                style=self._get_status(result[0])
-            )            
+                style=self._get_status(result[0]),
+            )
 
         elif isinstance(result, Result):
             self._print_individual_result(result)
@@ -216,7 +208,7 @@ class RichResults:
         msg = f"{symbol * 4} {result.name} ** changed = {result.changed} "
         level_name = logging.getLevelName(result.severity_level)
 
-        if self.timing and getattr(result, 'task', None):
+        if self.timing and getattr(result, "task", None):
             post = (
                 f" {level_name} [{datetime.timedelta(seconds = result.task.run_time)}]"
             )
@@ -230,12 +222,21 @@ class RichResults:
             style=self._get_status(result),
         )
 
+        if self.display_params:
+            task = result.task.task.__name__
+            msg = f"{'!' * 4} task={task} args={result.task.params} "
+            self.console.print(
+                f"{msg}{'!' * (self.width - len(msg))}",
+                highlight=False,
+                markup=False,
+                style="params",
+            )
+
         for attr in ["stdout", "result", "stderr", "diff"]:
             x = getattr(result, attr, None)
 
             if x:
                 self.console.print(x, highlight=self.attrib_highlight)
-
 
     def _get_status(self, result: Result) -> str:
         if result.failed:
@@ -290,10 +291,12 @@ class RichResults:
 
     def _get_summary_count(self, count: int, style: str) -> Text:
         text = str(count) if count else "-"
-        style = style if count else 'no_style'
+        style = style if count else "no_style"
         return Text(text, style=style)
 
-    def write_results(self, filename: str = "results.html", format: str = "html") -> None:
+    def write_results(
+        self, filename: str = "results.html", format: str = "html"
+    ) -> None:
         self.lock.acquire()
         if format == "text":
             self.console.save_text(filename)
@@ -310,12 +313,9 @@ class RichResults:
         for host, host_data in nr.inventory.hosts.items():
             host_dict = host_data.dict()
             if not passwords:
-                host_dict['password'] = "******"
+                host_dict["password"] = "******"
 
-            table.add_row(
-                host,
-                pprint.pformat(host_dict)
-            )
+            table.add_row(host, pprint.pformat(host_dict))
 
         self.lock.acquire()
         self.console.print(table, width=self.width)
