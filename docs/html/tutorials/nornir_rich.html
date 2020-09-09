@@ -405,7 +405,7 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">nornir</span> <span class="kn">import</span> <span class="n">InitNornir</span>
-<span class="kn">from</span> <span class="nn">nornir_napalm.plugins.tasks</span> <span class="kn">import</span> <span class="n">napalm_get</span><span class="p">,</span> <span class="n">napalm_cli</span>
+<span class="kn">from</span> <span class="nn">nornir_napalm.plugins.tasks</span> <span class="kn">import</span> <span class="n">napalm_get</span>
 
 <span class="n">nr</span> <span class="o">=</span> <span class="n">InitNornir</span><span class="p">(</span>
     <span class="n">inventory</span><span class="o">=</span><span class="p">{</span>
@@ -416,24 +416,71 @@ div.rendered_html tbody tr:hover {
             <span class="s2">&quot;defaults_file&quot;</span><span class="p">:</span> <span class="s2">&quot;inventory/defaults.yaml&quot;</span><span class="p">,</span>
         <span class="p">}</span>
     <span class="p">},</span>
-    <span class="n">dry_run</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
 <span class="p">)</span>
 </pre></div>
 </div>
 </div>
+<p>After creating the standard Nornir object, a RichResults processor object is instantiated and added to Nornir. The width of 67 in the example was only used as this notebook is going into read the docs via sphinx and without it the output required a scroll bar. Normally leaving this at defaults will just use up max length of the terminal.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">nornir_rich.plugins.processors</span> <span class="kn">import</span> <span class="n">RichResults</span>
+
 <span class="n">rr</span> <span class="o">=</span> <span class="n">RichResults</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">67</span><span class="p">)</span>
 <span class="n">nr</span><span class="o">.</span><span class="n">processors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rr</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
+<p>A basic password transform is done on the inventory using dotenv applied environment variables. This is just for test environment setup.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">dotenv</span> <span class="kn">import</span> <span class="n">load_dotenv</span><span class="p">,</span> <span class="n">find_dotenv</span>
+<span class="n">load_dotenv</span><span class="p">(</span><span class="n">find_dotenv</span><span class="p">())</span>
+
+<span class="k">def</span> <span class="nf">passwd_from_env</span><span class="p">(</span><span class="n">task</span><span class="p">):</span>
+    <span class="n">task</span><span class="o">.</span><span class="n">host</span><span class="o">.</span><span class="n">password</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="n">task</span><span class="o">.</span><span class="n">host</span><span class="o">.</span><span class="n">password</span><span class="p">)</span>
+
+<span class="n">r</span> <span class="o">=</span> <span class="n">nr</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">passwd_from_env</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">passwd_from_env****************************************************
+</pre></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #000080">* vyos ** changed = </span><span style="color: #ff0000; font-style: italic">False</span><span style="color: #000080"> *****************************************</span>
+</pre></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #005f00">vvvv passwd_from_env ** changed = False vvvvv INFO [0:00:00.000087]</span>
+</pre></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #005f00">^^^^ END passwd_from_env ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^</span>
+</pre></div>
+</div>
+<p>By default, write_inventory function won’t list passwords without the passwords=True argument.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -445,179 +492,133 @@ div.rendered_html tbody tr:hover {
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area rendered_html docutils container">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">╭──────┬────────────────┬──────────┬──────────┬───────────────────╮
-│<span style="font-weight: bold"> Host </span>│<span style="font-weight: bold"> hostname       </span>│<span style="font-weight: bold"> username </span>│<span style="font-weight: bold"> platform </span>│<span style="font-weight: bold"> data              </span>│
-├──────┼────────────────┼──────────┼──────────┼───────────────────┤
-│ vyos │ 192.168.99.170 │ vyos     │ vyos     │ {}                │
-╰──────┴────────────────┴──────────┴──────────┴───────────────────╯
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">╭─────────────┬───────────────────────────────────────────────────╮
+│<span style="font-weight: bold"> Host        </span>│<span style="font-weight: bold"> Data                                              </span>│
+├─────────────┼───────────────────────────────────────────────────┤
+│ vyos        │ connection_options: {}                            │
+│             │ data: {}                                          │
+│             │ groups: []                                        │
+│             │ hostname: localhost                               │
+│             │ name: vyos                                        │
+│             │ password: '******'                                │
+│             │ platform: vyos                                    │
+│             │ port: null                                        │
+│             │ username: vyos                                    │
+│             │                                                   │
+╰─────────────┴───────────────────────────────────────────────────╯
 </pre></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="n">nr</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">task</span><span class="o">=</span><span class="n">napalm_get</span><span class="p">,</span> <span class="n">getters</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;interfaces&#39;</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;run1&#39;</span><span class="p">)</span>
-<span class="n">nr</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">task</span><span class="o">=</span><span class="n">napalm_get</span><span class="p">,</span> <span class="n">getters</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;interfaces&#39;</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;run2&#39;</span><span class="p">)</span>
-<span class="n">nr</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">task</span><span class="o">=</span><span class="n">napalm_get</span><span class="p">,</span> <span class="n">getters</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;interfaces&#39;</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;run3&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
-<div class="output_area docutils container">
-<script type="application/vnd.jupyter.widget-view+json">{"version_major": 2, "version_minor": 0, "model_id": "9c8a1249084d43679c8bc2c45f853326"}</script></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
 <div class="output_area rendered_html docutils container">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #0000ff">* vyos ** changed = </span><span style="color: #ff0000; font-style: italic">False</span><span style="color: #0000ff"> ************************ </span><span style="color: #0000ff; font-weight: bold">[</span><span style="color: #000080; font-weight: bold">0</span><span style="color: #0000ff">:</span><span style="color: #000080; font-weight: bold">00</span><span style="color: #0000ff">:</span><span style="color: #000080; font-weight: bold">06.704714</span><span style="color: #0000ff; font-weight: bold">]</span>
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">run1***************************************************************
 </pre></div>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area rendered_html docutils container">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #008000">---- run1 ** changed = False ---------------- INFO [0:00:06.684592]</span>
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #000080">* vyos ** changed = </span><span style="color: #ff0000; font-style: italic">False</span><span style="color: #000080"> *****************************************</span>
 </pre></div>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area rendered_html docutils container">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">{
-    'interfaces': {
-        'eth0': {
-            'is_up': True,
-            'is_enabled': True,
-            'description': '',
-            'last_flapped': -1.0,
-            'mtu': -1,
-            'speed': 0,
-            'mac_address': '08:00:27:e0:28:63'
-        },
-        'lo': {
-            'is_up': True,
-            'is_enabled': True,
-            'description': '',
-            'last_flapped': -1.0,
-            'mtu': -1,
-            'speed': 0,
-            'mac_address': '00:00:00:00:00:00'
-        }
-    }
-}
-</pre></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<script type="application/vnd.jupyter.widget-view+json">{"version_major": 2, "version_minor": 0, "model_id": "d91491e908ce4916820a8e2caa8a9559"}</script></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area rendered_html docutils container">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #0000ff">* vyos ** changed = </span><span style="color: #ff0000; font-style: italic">False</span><span style="color: #0000ff"> ************************ </span><span style="color: #0000ff; font-weight: bold">[</span><span style="color: #000080; font-weight: bold">0</span><span style="color: #0000ff">:</span><span style="color: #000080; font-weight: bold">00</span><span style="color: #0000ff">:</span><span style="color: #000080; font-weight: bold">02.039629</span><span style="color: #0000ff; font-weight: bold">]</span>
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #800000">vvvv run1 ** changed = False vvvvvvvvvvvvvvv ERROR [0:00:04.676707]</span>
 </pre></div>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area rendered_html docutils container">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #008000">---- run2 ** changed = False ---------------- INFO [0:00:02.012886]</span>
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">Traceback (most recent call last):
+  File "/home/patrick/dev/nornir_rich/.venv/lib/python3.8/site-packages/nornir/core/task.py",
+line 98, in start
+    r = self.task(self, **self.params)
+  File "/home/patrick/dev/nornir_rich/.venv/lib/python3.8/site-packages/nornir_napalm/plugins
+/tasks/napalm_get.py", line 32, in napalm_get
+    device = task.host.get_connection(CONNECTION_NAME, task.nornir.config)
+  File
+"/home/patrick/dev/nornir_rich/.venv/lib/python3.8/site-packages/nornir/core/inventory.py",
+line 440, in get_connection
+    self.open_connection(
+  File
+"/home/patrick/dev/nornir_rich/.venv/lib/python3.8/site-packages/nornir/core/inventory.py",
+line 492, in open_connection
+    conn_obj.open(
+  File "/home/patrick/dev/nornir_rich/.venv/lib/python3.8/site-packages/nornir_napalm/plugins
+/connections/__init__.py", line 57, in open
+    connection.open()
+  File "/home/patrick/dev/nornir_rich/.venv/lib/python3.8/site-packages/napalm_vyos/vyos.py",
+line 98, in open
+    self.device = ConnectHandler(device_type='vyos',
+  File
+"/home/patrick/dev/nornir_rich/.venv/lib/python3.8/site-packages/netmiko/ssh_dispatcher.py",
+line 302, in ConnectHandler
+    return ConnectionClass(*args, **kwargs)
+  File
+"/home/patrick/dev/nornir_rich/.venv/lib/python3.8/site-packages/netmiko/base_connection.py",
+line 344, in __init__
+    self._open()
+  File
+"/home/patrick/dev/nornir_rich/.venv/lib/python3.8/site-packages/netmiko/base_connection.py",
+line 349, in _open
+    self.establish_connection()
+  File
+"/home/patrick/dev/nornir_rich/.venv/lib/python3.8/site-packages/netmiko/base_connection.py",
+line 918, in establish_connection
+    self.remote_conn_pre.connect(**ssh_connect_params)
+  File "/home/patrick/dev/nornir_rich/.venv/lib/python3.8/site-packages/paramiko/client.py",
+line 435, in connect
+    self._auth(
+  File "/home/patrick/dev/nornir_rich/.venv/lib/python3.8/site-packages/paramiko/client.py",
+line 764, in _auth
+    raise saved_exception
+  File "/home/patrick/dev/nornir_rich/.venv/lib/python3.8/site-packages/paramiko/client.py",
+line 751, in _auth
+    self._transport.auth_password(username, password)
+  File
+"/home/patrick/dev/nornir_rich/.venv/lib/python3.8/site-packages/paramiko/transport.py", line
+1509, in auth_password
+    return self.auth_handler.wait_for_response(my_event)
+  File
+"/home/patrick/dev/nornir_rich/.venv/lib/python3.8/site-packages/paramiko/auth_handler.py",
+line 250, in wait_for_response
+    raise e
+paramiko.ssh_exception.AuthenticationException: Authentication failed.
+
 </pre></div>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area rendered_html docutils container">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">{
-    'interfaces': {
-        'eth0': {
-            'is_up': True,
-            'is_enabled': True,
-            'description': '',
-            'last_flapped': -1.0,
-            'mtu': -1,
-            'speed': 0,
-            'mac_address': '08:00:27:e0:28:63'
-        },
-        'lo': {
-            'is_up': True,
-            'is_enabled': True,
-            'description': '',
-            'last_flapped': -1.0,
-            'mtu': -1,
-            'speed': 0,
-            'mac_address': '00:00:00:00:00:00'
-        }
-    }
-}
-</pre></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<script type="application/vnd.jupyter.widget-view+json">{"version_major": 2, "version_minor": 0, "model_id": "0bb66a226db042cb839e58e506359a00"}</script></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area rendered_html docutils container">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #0000ff">* vyos ** changed = </span><span style="color: #ff0000; font-style: italic">False</span><span style="color: #0000ff"> ************************ </span><span style="color: #0000ff; font-weight: bold">[</span><span style="color: #000080; font-weight: bold">0</span><span style="color: #0000ff">:</span><span style="color: #000080; font-weight: bold">00</span><span style="color: #0000ff">:</span><span style="color: #000080; font-weight: bold">02.033010</span><span style="color: #0000ff; font-weight: bold">]</span>
-</pre></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area rendered_html docutils container">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #008000">---- run3 ** changed = False ---------------- INFO [0:00:02.010315]</span>
-</pre></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area rendered_html docutils container">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">{
-    'interfaces': {
-        'eth0': {
-            'is_up': True,
-            'is_enabled': True,
-            'description': '',
-            'last_flapped': -1.0,
-            'mtu': -1,
-            'speed': 0,
-            'mac_address': '08:00:27:e0:28:63'
-        },
-        'lo': {
-            'is_up': True,
-            'is_enabled': True,
-            'description': '',
-            'last_flapped': -1.0,
-            'mtu': -1,
-            'speed': 0,
-            'mac_address': '00:00:00:00:00:00'
-        }
-    }
-}
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #800000">^^^^ END run1 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^</span>
 </pre></div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-AggregatedResult (run3): {&#39;vyos&#39;: MultiResult: [Result: &#34;run3&#34;]}
+AggregatedResult (run1): {&#39;vyos&#39;: MultiResult: [Result: &#34;run1&#34;]}
 </pre></div></div>
 </div>
+<p>The write_summary method will provide a summary of the run.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -632,13 +633,393 @@ AggregatedResult (run3): {&#39;vyos&#39;: MultiResult: [Result: &#34;run3&#34;]}
 <pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">╭───────────────────────────────────────┬────────┬────────┬───────╮
 │<span style="font-weight: bold"> Task                                  </span>│<span style="font-weight: bold"> Ok     </span>│<span style="font-weight: bold"> Chang… </span>│<span style="font-weight: bold"> Fail… </span>│
 ├───────────────────────────────────────┼────────┼────────┼───────┤
-│ run1                                  │<span style="color: #008000"> 1      </span>│<span style="color: #ffaf00"> 0      </span>│<span style="color: #800000"> 0     </span>│
-│ run2                                  │<span style="color: #008000"> 1      </span>│<span style="color: #ffaf00"> 0      </span>│<span style="color: #800000"> 0     </span>│
-│ run3                                  │<span style="color: #008000"> 1      </span>│<span style="color: #ffaf00"> 0      </span>│<span style="color: #800000"> 0     </span>│
+│ passwd_from_env                       │ <span style="color: #005f00">1     </span> │ -      │ -     │
+│ run1                                  │ -      │ -      │ <span style="color: #800000">1    </span> │
 ├───────────────────────────────────────┼────────┼────────┼───────┤
-│<span style="font-weight: bold"> Total                                 </span>│<span style="font-weight: bold"> 3      </span>│<span style="font-weight: bold"> 0      </span>│<span style="font-weight: bold"> 0     </span>│
+│<span style="font-weight: bold"> Total                                 </span>│<span style="font-weight: bold"> </span><span style="color: #005f00; font-weight: bold">1     </span><span style="font-weight: bold"> </span>│<span style="font-weight: bold"> -      </span>│<span style="font-weight: bold"> </span><span style="color: #800000; font-weight: bold">1    </span><span style="font-weight: bold"> </span>│
 ╰───────────────────────────────────────┴────────┴────────┴───────╯
 </pre></div>
+</div>
+<p>Skip messages are displayed by default for skipped hosts when a task is run from nr with skipped hosts present.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">nornir.core.task</span> <span class="kn">import</span> <span class="n">Result</span>
+
+<span class="k">def</span> <span class="nf">return_changed</span><span class="p">(</span><span class="n">task</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">Result</span><span class="p">(</span><span class="n">task</span><span class="o">.</span><span class="n">host</span><span class="p">,</span> <span class="n">changed</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">return_failed</span><span class="p">(</span><span class="n">task</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">Result</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="n">task</span><span class="o">.</span><span class="n">host</span><span class="p">,</span> <span class="n">failed</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">nr</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">return_changed</span><span class="p">)</span>
+<span class="n">nr</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">return_failed</span><span class="p">)</span>
+<span class="n">nr</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">return_changed</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">return_changed*****************************************************
+</pre></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #808080">* </span><span style="color: #808080; font-weight: bold">{</span><span style="color: #008000">'vyos'</span><span style="color: #808080; font-weight: bold">}</span><span style="color: #808080"> ** skipped *********************************************</span>
+</pre></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">return_failed******************************************************
+</pre></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #808080">* </span><span style="color: #808080; font-weight: bold">{</span><span style="color: #008000">'vyos'</span><span style="color: #808080; font-weight: bold">}</span><span style="color: #808080"> ** skipped *********************************************</span>
+</pre></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">return_changed*****************************************************
+</pre></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #808080">* </span><span style="color: #808080; font-weight: bold">{</span><span style="color: #008000">'vyos'</span><span style="color: #808080; font-weight: bold">}</span><span style="color: #808080"> ** skipped *********************************************</span>
+</pre></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+AggregatedResult (return_changed): {}
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">rr</span><span class="o">.</span><span class="n">write_summary</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">╭───────────────────────────────────────┬────────┬────────┬───────╮
+│<span style="font-weight: bold"> Task                                  </span>│<span style="font-weight: bold"> Ok     </span>│<span style="font-weight: bold"> Chang… </span>│<span style="font-weight: bold"> Fail… </span>│
+├───────────────────────────────────────┼────────┼────────┼───────┤
+│ passwd_from_env                       │ <span style="color: #005f00">1     </span> │ -      │ -     │
+│ run1                                  │ -      │ -      │ <span style="color: #800000">1    </span> │
+│ return_changed                        │ -      │ -      │ -     │
+│ return_failed                         │ -      │ -      │ -     │
+│ return_changed                        │ -      │ -      │ -     │
+├───────────────────────────────────────┼────────┼────────┼───────┤
+│<span style="font-weight: bold"> Total                                 </span>│<span style="font-weight: bold"> </span><span style="color: #005f00; font-weight: bold">1     </span><span style="font-weight: bold"> </span>│<span style="font-weight: bold"> -      </span>│<span style="font-weight: bold"> </span><span style="color: #800000; font-weight: bold">1    </span><span style="font-weight: bold"> </span>│
+╰───────────────────────────────────────┴────────┴────────┴───────╯
+</pre></div>
+</div>
+<p>Output formats are mostly handled ok and can either be highlighted with rich or left as uncolored. By default it is uncolored as the highlighting isn’t exactly pleasing to my eyes minus the exceptions.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">def</span> <span class="nf">return_diff</span><span class="p">(</span><span class="n">task</span><span class="p">):</span>
+    <span class="n">diff</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;inventory/test.diff&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">Result</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="n">task</span><span class="o">.</span><span class="n">host</span><span class="p">,</span> <span class="n">diff</span><span class="o">=</span><span class="n">diff</span><span class="p">,</span> <span class="n">changed</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">return_json</span><span class="p">(</span><span class="n">task</span><span class="p">):</span>
+    <span class="n">json</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;inventory/test.json&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">Result</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="n">task</span><span class="o">.</span><span class="n">host</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">json</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">return_xml</span><span class="p">(</span><span class="n">task</span><span class="p">):</span>
+    <span class="n">xml</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;inventory/test.xml&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">Result</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="n">task</span><span class="o">.</span><span class="n">host</span><span class="p">,</span> <span class="n">result</span><span class="o">=</span><span class="n">xml</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">grouped</span><span class="p">(</span><span class="n">task</span><span class="p">):</span>
+    <span class="n">task</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">return_diff</span><span class="p">)</span>
+    <span class="n">task</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">return_json</span><span class="p">)</span>
+    <span class="n">task</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">return_xml</span><span class="p">)</span>
+
+<span class="n">nr</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">reset_failed_hosts</span><span class="p">()</span>
+<span class="n">nr</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">grouped</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">grouped************************************************************
+</pre></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #000080">* vyos ** changed = </span><span style="color: #00ff00; font-style: italic">True</span><span style="color: #000080"> ******************************************</span>
+</pre></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #005f00">vvvv grouped ** changed = False vvvvvvvvvvvvv INFO [0:00:00.013733]</span>
+</pre></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #ffaf00">---- return_diff ** changed = True ---------- INFO [0:00:00.004564]</span>
+</pre></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">1,8c1,8
+&lt; books:
+&lt;   - id: bk102
+&lt;       author: Crockford, Douglas
+&lt;       title: 'JavaScript: The Good Parts'
+&lt;       genre: Computer
+&lt;       price: 29.99
+&lt;       publish_date: !!str 2008-05-01
+&lt;       description: Unearthing the Excellence in JavaScript
+---
+&gt; &lt;book id="bk101"&gt;
+&gt;   &lt;author&gt;Gambardella, Matthew&lt;/author&gt;
+&gt;   &lt;title&gt;XML Developer's Guide&lt;/title&gt;
+&gt;   &lt;genre&gt;Computer&lt;/genre&gt;
+&gt;   &lt;price&gt;44.95&lt;/price&gt;
+&gt;   &lt;publish_date&gt;2000-10-01&lt;/publish_date&gt;
+&gt;   &lt;description&gt;An in-depth look at creating applicationswith XML.&lt;/description&gt;
+&gt; &lt;/book&gt;
+
+</pre></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #005f00">---- return_json ** changed = False --------- INFO [0:00:00.004083]</span>
+</pre></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">{
+  "books": [
+    {
+      "id": "bk102",
+      "author": "Crockford, Douglas",
+      "title": "JavaScript: The Good Parts",
+      "genre": "Computer",
+      "price": 29.99,
+      "publish_date": "2008-05-01",
+      "description": "Unearthing the Excellence in JavaScript"
+    }
+  ]
+}
+
+</pre></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #005f00">---- return_xml ** changed = False ---------- INFO [0:00:00.004883]</span>
+</pre></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">&lt;book id="bk101"&gt;
+  &lt;author&gt;Gambardella, Matthew&lt;/author&gt;
+  &lt;title&gt;XML Developer's Guide&lt;/title&gt;
+  &lt;genre&gt;Computer&lt;/genre&gt;
+  &lt;price&gt;44.95&lt;/price&gt;
+  &lt;publish_date&gt;2000-10-01&lt;/publish_date&gt;
+  &lt;description&gt;An in-depth look at creating applicationswith XML.&lt;/description&gt;
+&lt;/book&gt;
+
+</pre></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #005f00">^^^^ END grouped ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^</span>
+</pre></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+AggregatedResult (grouped): {&#39;vyos&#39;: MultiResult: [Result: &#34;grouped&#34;, Result: &#34;return_diff&#34;, Result: &#34;return_json&#34;, Result: &#34;return_xml&#34;]}
+</pre></div></div>
+</div>
+<p>Or highlighted…</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">rr</span><span class="o">.</span><span class="n">attrib_highlight</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">nr</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">grouped</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">grouped************************************************************
+</pre></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #000080">* vyos ** changed = </span><span style="color: #00ff00; font-style: italic">True</span><span style="color: #000080"> ******************************************</span>
+</pre></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #005f00">vvvv grouped ** changed = False vvvvvvvvvvvvv INFO [0:00:00.000818]</span>
+</pre></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #ffaf00">---- return_diff ** changed = True ---------- INFO [0:00:00.000468]</span>
+</pre></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #000080; font-weight: bold">1</span>,8c1,<span style="color: #000080; font-weight: bold">8</span>
+&lt; books:
+&lt;   - id: bk102
+&lt;       author: Crockford, Douglas
+&lt;       title: <span style="color: #008000">'JavaScript: The Good Parts'</span>
+&lt;       genre: Computer
+&lt;       price: <span style="color: #000080; font-weight: bold">29.99</span>
+&lt;       publish_date: !!str <span style="color: #000080; font-weight: bold">2008</span>-<span style="color: #000080; font-weight: bold">05</span>-<span style="color: #000080; font-weight: bold">01</span>
+&lt;       description: Unearthing the Excellence in JavaScript
+---
+&gt; <span style="font-weight: bold">&lt;</span><span style="color: #ff00ff; font-weight: bold">book</span><span style="color: #000000"> </span><span style="color: #808000; font-style: italic">id</span><span style="color: #000000">=</span><span style="color: #008000">"bk101"</span><span style="font-weight: bold">&gt;</span>
+&gt;   <span style="font-weight: bold">&lt;</span><span style="color: #ff00ff; font-weight: bold">author</span><span style="font-weight: bold">&gt;</span>Gambardella, Matthew<span style="font-weight: bold">&lt;</span><span style="color: #800080">/</span><span style="color: #ff00ff">author</span><span style="font-weight: bold">&gt;</span>
+&gt;   <span style="font-weight: bold">&lt;</span><span style="color: #ff00ff; font-weight: bold">title</span><span style="font-weight: bold">&gt;</span>XML Developer's Guide<span style="font-weight: bold">&lt;</span><span style="color: #800080">/</span><span style="color: #ff00ff">title</span><span style="font-weight: bold">&gt;</span>
+&gt;   <span style="font-weight: bold">&lt;</span><span style="color: #ff00ff; font-weight: bold">genre</span><span style="font-weight: bold">&gt;</span>Computer<span style="font-weight: bold">&lt;</span><span style="color: #800080">/</span><span style="color: #ff00ff">genre</span><span style="font-weight: bold">&gt;</span>
+&gt;   <span style="font-weight: bold">&lt;</span><span style="color: #ff00ff; font-weight: bold">price</span><span style="font-weight: bold">&gt;</span><span style="color: #000080; font-weight: bold">44.95</span><span style="font-weight: bold">&lt;</span><span style="color: #800080">/</span><span style="color: #ff00ff">price</span><span style="font-weight: bold">&gt;</span>
+&gt;   <span style="font-weight: bold">&lt;</span><span style="color: #ff00ff; font-weight: bold">publish_date</span><span style="font-weight: bold">&gt;</span><span style="color: #000080; font-weight: bold">2000</span>-<span style="color: #000080; font-weight: bold">10</span>-<span style="color: #000080; font-weight: bold">01</span><span style="font-weight: bold">&lt;</span><span style="color: #800080">/</span><span style="color: #ff00ff">publish_date</span><span style="font-weight: bold">&gt;</span>
+&gt;   <span style="font-weight: bold">&lt;</span><span style="color: #ff00ff; font-weight: bold">description</span><span style="font-weight: bold">&gt;</span>An in-depth look at creating applicationswith XML.<span style="font-weight: bold">&lt;</span><span style="color: #800080">/</span><span style="color: #ff00ff">description</span><span style="font-weight: bold">&gt;</span>
+&gt; <span style="font-weight: bold">&lt;</span><span style="color: #800080">/</span><span style="color: #ff00ff">book</span><span style="font-weight: bold">&gt;</span>
+
+</pre></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #005f00">---- return_json ** changed = False --------- INFO [0:00:00.000127]</span>
+</pre></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="font-weight: bold">{</span>
+  <span style="color: #008000">"books"</span>: <span style="font-weight: bold">[</span>
+    <span style="font-weight: bold">{</span>
+      <span style="color: #008000">"id"</span>: <span style="color: #008000">"bk102"</span>,
+      <span style="color: #008000">"author"</span>: <span style="color: #008000">"Crockford, Douglas"</span>,
+      <span style="color: #008000">"title"</span>: <span style="color: #008000">"JavaScript: The Good Parts"</span>,
+      <span style="color: #008000">"genre"</span>: <span style="color: #008000">"Computer"</span>,
+      <span style="color: #008000">"price"</span>: <span style="color: #000080; font-weight: bold">29.99</span>,
+      <span style="color: #008000">"publish_date"</span>: <span style="color: #008000">"2008-05-01"</span>,
+      <span style="color: #008000">"description"</span>: <span style="color: #008000">"Unearthing the Excellence in JavaScript"</span>
+    <span style="font-weight: bold">}</span>
+  <span style="font-weight: bold">]</span>
+<span style="font-weight: bold">}</span>
+
+</pre></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #005f00">---- return_xml ** changed = False ---------- INFO [0:00:00.000093]</span>
+</pre></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="font-weight: bold">&lt;</span><span style="color: #ff00ff; font-weight: bold">book</span><span style="color: #000000"> </span><span style="color: #808000; font-style: italic">id</span><span style="color: #000000">=</span><span style="color: #008000">"bk101"</span><span style="font-weight: bold">&gt;</span>
+  <span style="font-weight: bold">&lt;</span><span style="color: #ff00ff; font-weight: bold">author</span><span style="font-weight: bold">&gt;</span>Gambardella, Matthew<span style="font-weight: bold">&lt;</span><span style="color: #800080">/</span><span style="color: #ff00ff">author</span><span style="font-weight: bold">&gt;</span>
+  <span style="font-weight: bold">&lt;</span><span style="color: #ff00ff; font-weight: bold">title</span><span style="font-weight: bold">&gt;</span>XML Developer's Guide<span style="font-weight: bold">&lt;</span><span style="color: #800080">/</span><span style="color: #ff00ff">title</span><span style="font-weight: bold">&gt;</span>
+  <span style="font-weight: bold">&lt;</span><span style="color: #ff00ff; font-weight: bold">genre</span><span style="font-weight: bold">&gt;</span>Computer<span style="font-weight: bold">&lt;</span><span style="color: #800080">/</span><span style="color: #ff00ff">genre</span><span style="font-weight: bold">&gt;</span>
+  <span style="font-weight: bold">&lt;</span><span style="color: #ff00ff; font-weight: bold">price</span><span style="font-weight: bold">&gt;</span><span style="color: #000080; font-weight: bold">44.95</span><span style="font-weight: bold">&lt;</span><span style="color: #800080">/</span><span style="color: #ff00ff">price</span><span style="font-weight: bold">&gt;</span>
+  <span style="font-weight: bold">&lt;</span><span style="color: #ff00ff; font-weight: bold">publish_date</span><span style="font-weight: bold">&gt;</span><span style="color: #000080; font-weight: bold">2000</span>-<span style="color: #000080; font-weight: bold">10</span>-<span style="color: #000080; font-weight: bold">01</span><span style="font-weight: bold">&lt;</span><span style="color: #800080">/</span><span style="color: #ff00ff">publish_date</span><span style="font-weight: bold">&gt;</span>
+  <span style="font-weight: bold">&lt;</span><span style="color: #ff00ff; font-weight: bold">description</span><span style="font-weight: bold">&gt;</span>An in-depth look at creating applicationswith XML.<span style="font-weight: bold">&lt;</span><span style="color: #800080">/</span><span style="color: #ff00ff">description</span><span style="font-weight: bold">&gt;</span>
+<span style="font-weight: bold">&lt;</span><span style="color: #800080">/</span><span style="color: #ff00ff">book</span><span style="font-weight: bold">&gt;</span>
+
+</pre></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #005f00">^^^^ END grouped ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^</span>
+</pre></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+AggregatedResult (grouped): {&#39;vyos&#39;: MultiResult: [Result: &#34;grouped&#34;, Result: &#34;return_diff&#34;, Result: &#34;return_json&#34;, Result: &#34;return_xml&#34;]}
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
 </div>
 </div>
 

@@ -1,0 +1,18 @@
+1,8c1,8
+< books:
+<   - id: bk102
+<       author: Crockford, Douglas
+<       title: 'JavaScript: The Good Parts'
+<       genre: Computer
+<       price: 29.99
+<       publish_date: !!str 2008-05-01
+<       description: Unearthing the Excellence in JavaScript
+---
+> <book id="bk101">
+>   <author>Gambardella, Matthew</author>
+>   <title>XML Developer's Guide</title>
+>   <genre>Computer</genre>
+>   <price>44.95</price>
+>   <publish_date>2000-10-01</publish_date>
+>   <description>An in-depth look at creating applicationswith XML.</description>
+> </book>

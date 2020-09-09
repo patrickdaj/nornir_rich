@@ -1,12 +1,16 @@
-from typing import List, Any
+from typing import List
+from ruamel import yaml
 import logging
 import threading
 import datetime
 import time
 import pprint
+import ipdb
 
 from nornir.core.inventory import Host, Inventory
 from nornir.core.task import AggregatedResult, MultiResult, Task, Result
+
+import click
 
 from rich.console import Console
 from rich.theme import Theme
@@ -14,6 +18,7 @@ from rich.table import Table
 from rich.box import ROUNDED
 from rich.progress import Progress, BarColumn
 from rich.text import Text
+from rich.prompt import Prompt
 
 from .progress_bar import TimeElapsedColumn
 from .custom_theme import CustomTheme
@@ -33,7 +38,7 @@ class RichResults:
         theme: Theme = CustomTheme,
         width: int = 0,
         timing: bool = True,
-        progress_bar: bool = True,
+        progress_bar: bool = False,
         show_skipped=True,
         attrib_highlight: bool = False,  # TODO - customize as its kinda ugly by default
         vars: List[str] = ["stdout", "diff", "result"],
@@ -49,8 +54,10 @@ class RichResults:
             timing (bool, optional): Include timing info. Defaults to True.
             progress_bar (bool, optional): Include progress bar. Defaults to True.
             show_skipped (bool, optional): Display details of skipped hosts. Defaults to True.
-            attrib_highlight (bool, optional): Use rich hightlighting on result attributes.  Defaults to False.
-            vars (list, optional): Define what attributes of result to show.  Defaults to ['stdout', 'diff', 'result']
+            attrib_highlight (bool, optional): Use rich hightlighting on result attributes.
+                Defaults to False.
+            vars (list, optional): Define what attributes of result to show.  Defaults to
+                ['stdout', 'diff', 'result']
         """
         self.severity_level = severity_level
         self.lock = threading.Lock()
@@ -64,6 +71,7 @@ class RichResults:
         self.vars = vars
         self.display_params = display_params
         self.show_skipped = show_skipped
+        
 
     def task_started(self, task: Task) -> None:
         """
@@ -92,6 +100,7 @@ class RichResults:
         This method is called when all the hosts have completed executing
         their respective task
         """
+
         if task.severity_level < self.severity_level:
             return
 
@@ -115,6 +124,7 @@ class RichResults:
         This method is called before a host starts executing its instance of
         the task
         """
+
         if self.timing:
             task.start_time = time.time()
 
@@ -127,6 +137,7 @@ class RichResults:
         """
         This method is called when a host completes its instance of a task
         """
+
         if self.progress_bar:
             if not result.failed:
                 self.progress.advance(self.progress_id)
@@ -140,6 +151,7 @@ class RichResults:
         """
         This method is called before a host starts executing a subtask
         """
+
         if self.timing:
             task.start_time = time.time()
 
@@ -152,6 +164,7 @@ class RichResults:
         """
         This method is called when a host completes executing a subtask
         """
+
         if self.progress_bar:
             if not result.failed:
                 self.progress.advance(self.progress_id)
@@ -161,6 +174,7 @@ class RichResults:
             task.run_time = task.end_time - task.start_time
             result[0].task = task
 
+
     def _print_result(self, result: Result) -> None:
 
         if isinstance(result, AggregatedResult):
@@ -169,8 +183,8 @@ class RichResults:
                 self.console.print(f"{msg}{'*' * (self.width - len(msg))}")
 
             hosts_set = set(result.task.nornir.inventory.hosts)
-            skipped = result.task.nornir.data.failed_hosts | hosts_set 
-            
+            skipped = result.task.nornir.data.failed_hosts | hosts_set
+
             for skipped_host in skipped:
                 if skipped_host not in result:
                     msg = f"* {skipped} ** skipped "
@@ -315,7 +329,7 @@ class RichResults:
             if not passwords:
                 host_dict["password"] = "******"
 
-            table.add_row(host, pprint.pformat(host_dict))
+            table.add_row(host, yaml.dump(host_dict))
 
         self.lock.acquire()
         self.console.print(table, width=self.width)

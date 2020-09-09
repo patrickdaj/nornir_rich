@@ -36,7 +36,7 @@
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="functions" href="tasks.html" />
+    <link rel="next" title="Tutorials" href="../tutorials/index.html" />
     <link rel="prev" title="API" href="index.html" /> 
 </head>
 
@@ -85,7 +85,6 @@
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">API</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">processors</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tasks.html">functions</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
@@ -183,8 +182,8 @@
 <h1>processors<a class="headerlink" href="#processors" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
 <dt id="nornir_rich.plugins.processors.RichResults">
-<em class="property">class </em><code class="sig-prename descclassname">nornir_rich.plugins.processors.</code><code class="sig-name descname">RichResults</code><span class="sig-paren">(</span><em class="sig-param">severity_level: int = 20</em>, <em class="sig-param">record: bool = True</em>, <em class="sig-param">display_params: bool = False</em>, <em class="sig-param">theme: rich.theme.Theme = &lt;rich.theme.Theme object&gt;</em>, <em class="sig-param">width: int = 0</em>, <em class="sig-param">timing: bool = True</em>, <em class="sig-param">progress_bar: bool = True</em>, <em class="sig-param">force_jupyter: bool = False</em><span class="sig-paren">)</span><a class="headerlink" href="#nornir_rich.plugins.processors.RichResults" title="Permalink to this definition">¶</a></dt>
-<dd><p><cite>rich</cite> implementation of the Processor interface.
+<em class="property">class </em><code class="sig-prename descclassname">nornir_rich.plugins.processors.</code><code class="sig-name descname">RichResults</code><span class="sig-paren">(</span><em class="sig-param">severity_level: int = 20, record: bool = True, display_params: bool = False, theme: rich.theme.Theme = &lt;rich.theme.Theme object&gt;, width: int = 0, timing: bool = True, progress_bar: bool = False, show_skipped=True, attrib_highlight: bool = False, vars: List[str] = ['stdout', 'diff', 'result']</em><span class="sig-paren">)</span><a class="headerlink" href="#nornir_rich.plugins.processors.RichResults" title="Permalink to this definition">¶</a></dt>
+<dd><p>rich implementation of the Processor interface.
 This plugin gets called when certain events happen by <cite>nornir</cite>.</p>
 <dl class="py method">
 <dt id="nornir_rich.plugins.processors.RichResults.subtask_instance_completed">
@@ -226,12 +225,12 @@ the task</p>
 
 <dl class="py method">
 <dt id="nornir_rich.plugins.processors.RichResults.write_inventory">
-<code class="sig-name descname">write_inventory</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">nr</span><span class="p">:</span> <span class="n">nornir.core.inventory.Inventory</span></em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#nornir_rich.plugins.processors.RichResults.write_inventory" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">write_inventory</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">nr</span><span class="p">:</span> <span class="n">nornir.core.inventory.Inventory</span></em>, <em class="sig-param"><span class="n">passwords</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#nornir_rich.plugins.processors.RichResults.write_inventory" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt id="nornir_rich.plugins.processors.RichResults.write_results">
-<code class="sig-name descname">write_results</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filename</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'results.html'</span></em>, <em class="sig-param"><span class="n">format</span><span class="o">=</span><span class="default_value">'html'</span></em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#nornir_rich.plugins.processors.RichResults.write_results" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">write_results</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filename</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'results.html'</span></em>, <em class="sig-param"><span class="n">format</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'html'</span></em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#nornir_rich.plugins.processors.RichResults.write_results" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -251,7 +250,7 @@ the task</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="tasks.html" class="btn btn-neutral float-right" title="functions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../tutorials/index.html" class="btn btn-neutral float-right" title="Tutorials" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="index.html" class="btn btn-neutral float-left" title="API" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
