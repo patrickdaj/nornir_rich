@@ -1,6 +1,6 @@
 # nornir_rich
 
-nornir_rich is a set of CLI tools for Nornir.  Maybe it should be named nornir-clitools. :)
+nornir_rich is a processor/results printer for Nornir using the rich python module.
 
 ## Features
 - Custom processor that supports more or less the standard Nornir format but:
@@ -9,10 +9,8 @@ nornir_rich is a set of CLI tools for Nornir.  Maybe it should be named nornir-c
     - All results exportable to HTML or text (thanks to rich)
     - Summary of execution
     - Listing of inventory
-    - Captures task runtime and also task details (nothing done with task details yet)
-- Inventory output in processor and CLI (similar to anisble-inventory)
-- Adhoc run task in CLI (similar to ansible-adhoc)
-- Support for running tasks from YAML (similar to ansible-playbook)
+    - Captures task runtime and also task details
+    - Inventory output
 
 ## Installation
 ```python
@@ -43,13 +41,3 @@ rr.write_results()
 ```
 
 The write_results automatically saves the screen output to HTML in results.html by default.
-
-## Debugging with step and start_at
-
-# nornir-cli
-
-## Inventory with nornir-cli inventory
-
-## Run addhoc tasks with nornir-cli adhoc
-
-## Be like an ansible with nornir-cli run and still have a debugger

@@ -1,13 +1,5 @@
-- Add logic to show skipped tasks/tasks, there is a nornir obj in there
-- Add step and start_at_task to RichResults by capturing at start of aggregate tasks, maybe even add a 
-  selection to turn on debugging or proceed or cancel
 - Add tests using pytest
 - Maybe write some docstrings so it can be documented in sphinx
 - Add sphinx docs with Jupyter tutorial
-- Figure out how to deal with results with large data
+- Figure out how to deal with results with large data, likely sending a param to mask
 - Add x of y to progress bar using custom
-
-- nornir-cli
-    - Better way to find modules rather than adding them
-    - Args needs a better way, perhaps use json
-    - test nornir-cli run
