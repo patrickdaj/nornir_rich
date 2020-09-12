@@ -95,13 +95,26 @@ class RichResults(object):
             style=self._get_status(result),
         )
 
-        attrs = vars if vars else ["stdout", "result", "stderr", "tests", "diff"]
+        attrs = vars if vars else ["stdout", "result", "stderr", "diff"]
 
         for attr in attrs:
             x = getattr(result, attr, None)
 
             if x:
                 self.console.print(x, highlight=False)
+
+        if getattr(result, 'tests', None):
+
+            for test in result.tests.tests:
+                self.console.print(test, style=self._get_test_status(test))
+
+
+    def _get_test_status(self, test: Any) -> Style:
+        if test.passed:
+            return Style(color="dark_green")
+        else:
+            return Style(color="red")
+    
 
     def _get_status(self, result: Result) -> Style:
         if result.failed:
