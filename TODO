@@ -1,5 +1,0 @@
-- Add tests using pytest
-- Maybe write some docstrings so it can be documented in sphinx
-- Add sphinx docs with Jupyter tutorial
-- Figure out how to deal with results with large data, likely sending a param to mask
-- Add x of y to progress bar using custom

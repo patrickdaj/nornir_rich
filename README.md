@@ -26,18 +26,18 @@ After creating a nornir object, a RichResults object must be created and associa
 
 ```python
 # assumes nr = InitNornir()
-from nornir_rich.plugins.processors import RichResult
+from nornir_rich.plugins.functions import RichResult
 
 rr = RichResult()
-nr.processors.append(rr)
-# or nr = nr.with_processor(rr)
 
-rr.write_inventory(nr)
+rr.inventory(nr)
 
-nr.run(do_stuff)
+rr.write(
+    nr.run(do_stuff)
+)
 
-rr.write_summary()
-rr.write_results()
+rr.summary()
+rr.results()
 ```
 
 The write_results automatically saves the screen output to HTML in results.html by default.

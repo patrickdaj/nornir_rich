@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "nornir_rich"
-version = "0.1.0"
+version = "0.1.1a"
 description = "Nornir results printer using "
 authors = ["Patrick Avery <patrickdaj@gmail.com>"]
 
@@ -11,7 +11,6 @@ nornir-cli = "nornir_rich.plugins.cli.nornir_cli:main"
 python = ">=3.6,<4.0"
 nornir = {version = "^3.0.0-beta.1", allow-prereleases = true}
 rich = "^6.0.0"
-click = "^7.1.2"
 
 [tool.poetry.dev-dependencies]
 ipdb = "^0.13.3"
@@ -29,8 +28,8 @@ sphinx_rtd_theme = "^0.4.3"
 nornir_napalm = "^0.1.1"
 napalm-vyos = "^0.2.0"
 python-dotenv = "^0.14.0"
-nornir_utils = { path = '../nornir_utils' }
-nornir_netmiko = { path = '../nornir_netmiko' }
+#nornir_utils = { path = '../nornir_utils' }
+#nornir_netmiko = { path = '../nornir_netmiko' }
 
 [build-system]
 requires = ["poetry>=0.12"]
