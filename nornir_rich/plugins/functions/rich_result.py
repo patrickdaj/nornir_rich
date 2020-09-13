@@ -18,10 +18,10 @@ LOCK = threading.Lock()
 @dataclass
 class RichResults(object):
     width: int = 80
-    console: Console = Console()
     lock: threading.Lock = threading.Lock()
     results: List[AggregatedResult] = field(default_factory=list)
     record: bool = False
+    console: Console = Console(self.record)
 
     def print(
         self,

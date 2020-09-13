@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "nornir_rich"
-version = "0.1.1a4"
+version = "0.1.1a5"
 description = "Nornir results printer using "
 authors = ["Patrick Avery <patrickdaj@gmail.com>"]
 
