@@ -20,8 +20,7 @@ class RichResults(object):
     width: int = 80
     lock: threading.Lock = threading.Lock()
     results: List[AggregatedResult] = field(default_factory=list)
-    record: bool = False
-    console: Console = Console(self.record)
+    console: Console = Console(record=True)
 
     def print(
         self,
