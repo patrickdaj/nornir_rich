@@ -21,6 +21,7 @@ class RichResults(object):
     console: Console = Console()
     lock: threading.Lock = threading.Lock()
     results: List[AggregatedResult] = field(default_factory=list)
+    record: bool = False
 
     def print(
         self,
