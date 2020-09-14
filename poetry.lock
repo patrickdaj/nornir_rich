@@ -172,7 +172,7 @@ dnspython = "*"
 passlib = "*"
 
 [[package]]
-category = "main"
+category = "dev"
 description = "Composable command line interface toolkit"
 name = "click"
 optional = false
@@ -845,6 +845,18 @@ napalm = ">=3,<4"
 nornir = ">=3.0.0b1,<3.1.0"
 
 [[package]]
+category = "main"
+description = "Collection of plugins and functions for nornir that don't require external dependencies"
+name = "nornir-utils"
+optional = false
+python-versions = ">=3.6,<4.0"
+version = "0.1.0"
+
+[package.dependencies]
+colorama = ">=0.4.3,<0.5.0"
+nornir = ">=3.0.0b1,<3.1.0"
+
+[[package]]
 category = "dev"
 description = "A web-based notebook environment for interactive computing"
 name = "notebook"
@@ -928,7 +940,6 @@ invoke = ["invoke (>=1.3)"]
 [[package]]
 category = "dev"
 description = "A Python Parser"
-marker = "python_version >= \"3.4\""
 name = "parso"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
@@ -1031,7 +1042,7 @@ wcwidth = "*"
 [[package]]
 category = "dev"
 description = "Run a subprocess in a pseudo terminal"
-marker = "python_version >= \"3.4\" and sys_platform != \"win32\" or os_name != \"nt\""
+marker = "python_version >= \"3.4\" and sys_platform != \"win32\" or sys_platform != \"win32\" or python_version >= \"3.3\" and sys_platform != \"win32\" or python_version >= \"3.4\" and sys_platform != \"win32\" and (python_version >= \"3.4\" and sys_platform != \"win32\" or sys_platform != \"win32\" or python_version >= \"3.3\" and sys_platform != \"win32\") or os_name != \"nt\" or python_version >= \"3.3\" and sys_platform != \"win32\" and (python_version >= \"3.4\" and sys_platform != \"win32\" or sys_platform != \"win32\" or python_version >= \"3.3\" and sys_platform != \"win32\")"
 name = "ptyprocess"
 optional = false
 python-versions = "*"
@@ -1703,7 +1714,7 @@ docs = ["sphinx", "jaraco.packaging (>=3.2)", "rst.linker (>=1.9)"]
 testing = ["jaraco.itertools", "func-timeout"]
 
 [metadata]
-content-hash = "ac9cf2f7449a015f94df028d7e150162e7978068dc12291fd96a0b0edbd5d23b"
+content-hash = "9815961f3570c93d7f74d87f2af40035dd92027052962c24fdc6312600243267"
 python-versions = ">=3.6,<4.0"
 
 [metadata.files]
@@ -2124,6 +2135,10 @@ nornir = [
 nornir-napalm = [
     {file = "nornir_napalm-0.1.1-py3-none-any.whl", hash = "sha256:f0def9ebedd99563cb95a7d390498b934106e1d8e2121dab4f132da02a75fd5d"},
     {file = "nornir_napalm-0.1.1.tar.gz", hash = "sha256:92b861c5aaf429b40bb9c0a4b24ed471e4f9f3251fa49919200e0d502aad3563"},
+]
+nornir-utils = [
+    {file = "nornir_utils-0.1.0-py3-none-any.whl", hash = "sha256:4cf3b8d529730cec0ab4d9aad3d2c586056cedd9315be1b176d8915d762b9cef"},
+    {file = "nornir_utils-0.1.0.tar.gz", hash = "sha256:6d0c04472a8ce3c42556cbb115676663a0c3fe9e818f4b5a4b3c46bb466e4c66"},
 ]
 notebook = [
     {file = "notebook-6.1.4-py3-none-any.whl", hash = "sha256:07b6e8b8a61aa2f780fe9a97430470485bc71262bc5cae8521f1441b910d2c88"},

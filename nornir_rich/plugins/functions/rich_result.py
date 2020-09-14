@@ -6,6 +6,12 @@ from rich.style import Style
 from rich.text import Text
 from rich.table import Table
 from rich.box import ROUNDED
+from rich.markdown import Markdown
+from rich.highlighter import ReprHighlighter, Highlighter
+from rich.panel import Panel
+from rich.padding import Padding
+from rich.pretty import Pretty
+from rich.traceback import Traceback
 import threading
 import logging
 
@@ -20,7 +26,9 @@ class RichResults(object):
     width: int = 80
     lock: threading.Lock = threading.Lock()
     results: List[AggregatedResult] = field(default_factory=list)
+    highlighter: Highlighter = ReprHighlighter()
     console: Console = Console(record=True)
+    current_indent: int = 0
 
     def print(
         self,
@@ -42,6 +50,7 @@ class RichResults(object):
         try:
             self.results.append(result)
             self._print_result(result, vars, failed, severity_level)
+            self.console.line()
         finally:
             LOCK.release()
 
@@ -54,28 +63,42 @@ class RichResults(object):
     ) -> None:
 
         if isinstance(result, AggregatedResult):
-            msg = f"{result.name}"
-            self.console.print(f"{msg}{'*' * (self.width - len(msg))}")
+            msg = f"{result.name} (hosts: {len(result)}"
+            if result.failed:
+                msg += ", failed: True"
+            if result.failed_hosts:
+                msg += f", failed_hosts: {list(result.failed_hosts.keys())})"
+            else:
+                msg += ")"
+
+            self.console.print(f"{msg}", style=Style(underline=True, color="black"))
 
             for host, host_data in sorted(result.items()):
-                msg = f"* {host} ** changed = {host_data.changed} "
+                msg = f"{host} "
+
+                result_details = []
+                if host_data.changed:
+                    result_details.append("changed = True")
+
+                if host_data.failed:
+                    result_details.append("failed = True")
+
+                if result_details:
+                    msg += "(" + ", ".join(result_details) + ")"
 
                 self.console.print(
-                    f"{msg}{'*' * (self.width - len(msg))}", style=Style(color="blue"),
+                    f"* {msg}", style=Style(color="blue"),
                 )
                 self._print_result(host_data, vars, failed, severity_level)
 
         elif isinstance(result, MultiResult):
+            self.current_indent += 1
             self._print_individual_result(result[0], group=True, vars=vars)
 
             for r in result[1:]:
                 self._print_result(r, vars, failed, severity_level)
 
-            msg = f"{'^' * 4} END {result[0].name} "
-            self.console.print(
-                f"{msg}{'^' * (self.width - len(msg))}",
-                style=self._get_status(result[0]),
-            )
+            self.current_indent -= 1
 
         elif isinstance(result, Result):
             self._print_individual_result(result, vars=vars)
@@ -83,46 +106,64 @@ class RichResults(object):
     def _print_individual_result(
         self, result: Result, vars: List[str], group: bool = False,
     ) -> None:
-        symbol = "v" if group else "-"
-        msg = f"{symbol * 4} {result.name} ** changed = {result.changed} "
-        level_name = logging.getLevelName(result.severity_level)
-        post = f" {level_name}"
 
-        self.console.print(
-            f"{msg}{symbol * (self.width - len(msg) - len(post))}{post}",
-            highlight=False,
-            markup=False,
-            style=self._get_status(result),
-        )
+        title_text = f"{result.name} "
+
+        result_details = []
+        if result.changed:
+            result_details.append("changed = True")
+
+        if result.severity_level != 20:
+            result_details.append(
+                f"logging_level = {logging.getLevelName(result.severity_level)}"
+            )
+
+        if result.failed:
+            result_details.append("failed = True")
+
+        if result_details:
+            title_text += "(" + ", ".join(result_details) + ")"
+
+        title = self.highlighter(title_text)
+        if group:
+            group_title = f"{' ' * self.current_indent}:heavy_check_mark: {title_text}"
+
+        items_table = Table.grid(padding=(0, 1), expand=False)
+        items_table.add_column(width=self.current_indent)
+        items_table.add_column(justify="right")
 
         attrs = vars if vars else ["stdout", "result", "stderr", "diff"]
 
         for attr in attrs:
             x = getattr(result, attr, None)
 
-            if x:
-                self.console.print(x, highlight=False)
+            if x and attr == "tests":
+                for i, test in enumerate(result.tests.tests):
+                    status = ":green_circle:" if test.passed else ":red_circle:"
+                    items_table.add_row(
+                        None,
+                        f"{attr} {status} " if i == 0 else f"{status}",
+                        Pretty(test, highlighter=self.highlighter),
+                    )
+            elif x and attr == "exception":
+                # TODO - figure out how to add traceback highlighting
+                items_table.add_row(
+                    None, f"{attr} = ", Pretty(x, highlighter=self.highlighter)
+                )
+            elif x:
+                items_table.add_row(
+                    None, f"{attr} = ", Pretty(x, highlighter=self.highlighter)
+                )
 
-        if getattr(result, 'tests', None):
-
-            for test in result.tests.tests:
-                self.console.print(test, style=self._get_test_status(test))
-
-
-    def _get_test_status(self, test: Any) -> Style:
-        if test.passed:
-            return Style(color="dark_green")
+        if items_table.row_count > 0:
+            self.console.print(
+                Padding(
+                    Panel(items_table, title=title, title_align="left"),
+                    (0, 0, 0, self.current_indent + 1),
+                )
+            )
         else:
-            return Style(color="red")
-    
-
-    def _get_status(self, result: Result) -> Style:
-        if result.failed:
-            return Style(color="red")
-        elif result.changed:
-            return Style(color="orange1")
-        else:
-            return Style(color="dark_green")
+            self.console.print(group_title)
 
     def summary(self) -> None:
         table = Table(

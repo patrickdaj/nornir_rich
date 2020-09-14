@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "nornir_rich"
-version = "0.1.1a6"
+version = "0.1.1a14"
 description = "Nornir results printer using "
 authors = ["Patrick Avery <patrickdaj@gmail.com>"]
 
@@ -11,6 +11,7 @@ nornir-cli = "nornir_rich.plugins.cli.nornir_cli:main"
 python = ">=3.6,<4.0"
 nornir = {version = "^3.0.0-beta.1", allow-prereleases = true}
 rich = "^6.0.0"
+nornir_utils = "^0.1.0"
 
 [tool.poetry.dev-dependencies]
 ipdb = "^0.13.3"
