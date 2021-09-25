@@ -1,4 +1,5 @@
-from typing import List, Any
+from typing import List
+from rich import style
 from ruamel import yaml
 from dataclasses import dataclass, field
 from rich.console import Console
@@ -19,6 +20,11 @@ from nornir.core.task import AggregatedResult, MultiResult, Result
 from nornir.core.inventory import Inventory
 
 LOCK = threading.Lock()
+
+
+class RedHighlighter(Highlighter):
+    def highlight(self, text):
+        text.stylize("bright_red", 0, len(text))
 
 
 @dataclass
@@ -54,7 +60,7 @@ class RichResults(object):
         finally:
             LOCK.release()
 
-    def _print_result(
+    def _print_result(  # pylama:ignore=C:select=C901
         self,
         result: Result,
         vars: List[str] = None,
@@ -71,40 +77,54 @@ class RichResults(object):
             else:
                 msg += ")"
 
-            self.console.print(f"{msg}", style=Style(underline=True, color="black"))
+            if severity_level >= 20:
+                self.console.print(
+                    f"{msg}", style=Style(underline=True, color="bright_black")
+                )
 
             for host, host_data in sorted(result.items()):
+                max_severity_level = max(host_data, key=lambda k: k.severity_level)
+                max_severity_level = max_severity_level.severity_level
                 msg = f"{host} "
 
-                result_details = []
-                if host_data.changed:
-                    result_details.append("changed = True")
+                if max_severity_level >= severity_level:
+                    result_details = []
+                    if host_data.changed:
+                        result_details.append("changed = True")
 
-                if host_data.failed:
-                    result_details.append("failed = True")
+                    if host_data.failed or failed:
+                        result_details.append("failed = True")
 
-                if result_details:
-                    msg += "(" + ", ".join(result_details) + ")"
+                    if result_details:
+                        msg += "(" + ", ".join(result_details) + ")"
 
-                self.console.print(
-                    f"* {msg}", style=Style(color="blue"),
-                )
+                    self.console.print(
+                        f"* {msg}", style=Style(color="blue"),
+                    )
                 self._print_result(host_data, vars, failed, severity_level)
 
         elif isinstance(result, MultiResult):
             self.current_indent += 1
-            self._print_individual_result(result[0], group=True, vars=vars)
+            self._print_individual_result(
+                result[0], group=True, vars=vars, severity_level=severity_level
+            )
 
             for r in result[1:]:
-                self._print_result(r, vars, failed, severity_level)
+                self._print_result(r, vars, failed, severity_level=severity_level)
 
             self.current_indent -= 1
 
         elif isinstance(result, Result):
-            self._print_individual_result(result, vars=vars)
+            self._print_individual_result(
+                result, vars=vars, severity_level=severity_level
+            )
 
     def _print_individual_result(
-        self, result: Result, vars: List[str], group: bool = False,
+        self,
+        result: Result,
+        vars: List[str],
+        group: bool = False,
+        severity_level: int = 20,
     ) -> None:
 
         title_text = f"{result.name} "
@@ -113,7 +133,7 @@ class RichResults(object):
         if result.changed:
             result_details.append("changed = True")
 
-        if result.severity_level != 20:
+        if result.severity_level >= severity_level:
             result_details.append(
                 f"logging_level = {logging.getLevelName(result.severity_level)}"
             )
@@ -128,9 +148,10 @@ class RichResults(object):
         if group:
             group_title = f"{' ' * self.current_indent}:heavy_check_mark: {title_text}"
 
-        items_table = Table.grid(padding=(0, 1), expand=False)
-        items_table.add_column(width=self.current_indent)
-        items_table.add_column(justify="right")
+        if result.severity_level >= severity_level:
+            items_table = Table.grid(padding=(0, 1), expand=False)
+            items_table.add_column(width=self.current_indent)
+            items_table.add_column(justify="right")
 
         attrs = vars if vars else ["stdout", "result", "stderr", "diff"]
 
@@ -146,24 +167,31 @@ class RichResults(object):
                         Pretty(test, highlighter=self.highlighter),
                     )
             elif x and attr == "exception":
-                # TODO - figure out how to add traceback highlighting
-                items_table.add_row(
-                    None, f"{attr} = ", Pretty(x, highlighter=self.highlighter)
-                )
+                if result.severity_level >= severity_level:
+                    # TODO - figure out how to add traceback highlighting
+                    highl = RedHighlighter()
+                    items_table.add_row(
+                        None, f"{attr} = ", Pretty(x, highlighter=highl),
+                    )
             elif x:
-                items_table.add_row(
-                    None, f"{attr} = ", Pretty(x, highlighter=self.highlighter)
+                if result.severity_level >= severity_level:
+                    if result.failed:
+                        highl = RedHighlighter()
+                    else:
+                        highl = self.highlighter
+                    items_table.add_row(
+                        None, f"{attr} = ", Pretty(x, highlighter=highl)
+                    )
+        if result.severity_level >= severity_level:
+            if items_table.row_count > 0:
+                self.console.print(
+                    Padding(
+                        Panel(items_table, title=title, title_align="left"),
+                        (0, 0, 0, self.current_indent + 1),
+                    )
                 )
-
-        if items_table.row_count > 0:
-            self.console.print(
-                Padding(
-                    Panel(items_table, title=title, title_align="left"),
-                    (0, 0, 0, self.current_indent + 1),
-                )
-            )
-        else:
-            self.console.print(group_title)
+            else:
+                self.console.print(group_title)
 
     def summary(self) -> None:
         table = Table(
@@ -208,7 +236,9 @@ class RichResults(object):
         self.console.print(table, width=self.width)
         self.lock.release()
 
-    def _get_summary_count(self, count: int, style: str) -> Text:
+    def _get_summary_count(
+        self, count: int, style: str
+    ) -> Text:  # pylama:ignore=C:select=C901
         text = str(count) if count else "-"
         style = style if count else "no_style"
         return Text(text, style=style)
