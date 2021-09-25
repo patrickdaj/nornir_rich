@@ -60,7 +60,7 @@ class RichResults(object):
         finally:
             LOCK.release()
 
-    def _print_result(  # pylama:ignore=C:select=C901
+    def _print_result(
         self,
         result: Result,
         vars: List[str] = None,
@@ -238,7 +238,7 @@ class RichResults(object):
 
     def _get_summary_count(
         self, count: int, style: str
-    ) -> Text:  # pylama:ignore=C:select=C901
+    ) -> Text:
         text = str(count) if count else "-"
         style = style if count else "no_style"
         return Text(text, style=style)
